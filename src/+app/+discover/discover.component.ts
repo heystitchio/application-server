@@ -6,13 +6,14 @@ import { ModelService } from '../shared/model/model.service';
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.Emulated,
   selector: 'home',
-  styleUrls: [ './home.component.css' ],
-  templateUrl: './home.component.html'
+  styleUrls: [ './discover.component.css' ],
+  templateUrl: './discover.component.html'
 })
-export class HomeComponent {
+export class DiscoverComponent {
   data: any = {};
-  constructor(public model: ModelService) {
-
+  constructor(
+    public model: ModelService
+  ) {
     // we need the data synchronously for the client to set the server response
     // we create another method so we have more control for testing
     this.universalInit();

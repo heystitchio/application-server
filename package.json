@@ -1,10 +1,10 @@
 {
-  "name": "universal-starter",
-  "version": "2.0.0",
-  "description": "Angular 2 Universal starter kit by @AngularClass",
+  "name": "stitch-application-server",
+  "version": "1.0.0",
+  "description": "Node Express web server utilising Angular2.1 Universal.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular/universal-starter.git"
+    "url": "https://github.com/heystitchio/application-server.git"
   },
   "scripts": {
     "watch": "webpack --watch",
@@ -50,6 +50,8 @@
     "@angular/upgrade": "~2.1.2",
     "@angularclass/bootloader": "~1.0.1",
     "@angularclass/idle-preload": "~1.0.4",
+    "@ngrx/core": "^1.2.0",
+    "@ngrx/store": "^2.2.1",
     "angular2-express-engine": "~2.1.0-rc.1",
     "angular2-platform-node": "~2.1.0-rc.1",
     "angular2-universal": "~2.1.0-rc.1",
@@ -77,6 +79,8 @@
     "@types/node": "^6.0.38",
     "@types/serve-static": "^1.7.27",
     "@types/webfontloader": "^1.6.27",
+    "@types/jquery": "^2.0.34",
+    "@types/slick-carousel": "^1.6.31",
     "@ngtools/webpack": "~1.1.7",
     "angular2-template-loader": "^0.4.0",
     "awesome-typescript-loader": "^2.2.4",

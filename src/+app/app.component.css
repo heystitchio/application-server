@@ -1,0 +1,7 @@
+.router-link-active {border-color:#51677a;}
+
+main {min-height: calc(100vh - 322px);background:#ecf0f1}
+
+footer {padding:40px 0;background:#011627;color:#fff;}
+
+footer h3 {color:#fff;}

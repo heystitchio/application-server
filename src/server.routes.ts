@@ -11,7 +11,7 @@
  **/
 export const routes: string[] = [
   'about',
-  'home',
+  'discover',
   'todo',
   'lazy',
 ];

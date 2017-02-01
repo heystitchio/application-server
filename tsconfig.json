@@ -13,6 +13,10 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    //"types": [
+      //"jquery",
+      //"slick-carousel"
+    //],
     "lib": ["es6", "dom"]
   },
   "exclude": [

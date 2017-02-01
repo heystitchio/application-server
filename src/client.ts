@@ -2,6 +2,7 @@
 import 'angular2-universal-polyfills';
 import 'ts-helpers';
 import './__workaround.browser'; // temporary until 2.1.1 things are patched in Core
+import './+app/shared/lib/rxjs-operators';
 
 // Angular 2
 import { enableProdMode } from '@angular/core';
@@ -21,11 +22,11 @@ export const platformRef = platformUniversalDynamic();
 export function main() {
   // Load fonts async
   // https://github.com/typekit/webfontloader#configuration
-  loadWebFont({
-    google: {
-      families: ['Droid Sans']
-    }
-  });
+  //loadWebFont({
+    //google: {
+      //families: ['Droid Sans']
+    //}
+  //});
 
   return platformRef.bootstrapModule(MainModule);
 }

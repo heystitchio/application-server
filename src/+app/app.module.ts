@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { HomeModule } from './+home/home.module';
+import { DiscoverModule } from './+discover/discover.module';
 import { AboutModule } from './+about/about.module';
 import { TodoModule } from './+todo/todo.module';
 
@@ -15,7 +15,7 @@ import { AppComponent, XLargeDirective } from './app.component';
   declarations: [ AppComponent, XLargeDirective ],
   imports: [
     SharedModule,
-    HomeModule,
+    DiscoverModule,
     AboutModule,
     TodoModule,
     AppRoutingModule
