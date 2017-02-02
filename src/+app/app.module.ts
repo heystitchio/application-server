@@ -3,22 +3,29 @@ import { FormsModule } from '@angular/forms';
 
 import { DiscoverModule } from './+discover/discover.module';
 import { AboutModule } from './+about/about.module';
-import { TodoModule } from './+todo/todo.module';
+import { AuthModule } from './+auth/auth.module';
+import { ContactModule } from './+contact/contact.module';
+import { CreateModule } from './+create/create.module';
+
+import { NotFoundRoutingModule } from './+404/404-routing.module';
 
 import { SharedModule } from './shared/shared.module';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent, XLargeDirective } from './app.component';
+import { AppComponent } from './app.component';
 
 
 @NgModule({
-  declarations: [ AppComponent, XLargeDirective ],
+  declarations: [ AppComponent ],
   imports: [
     SharedModule,
     DiscoverModule,
     AboutModule,
-    TodoModule,
-    AppRoutingModule
+    AuthModule,
+    ContactModule,
+    CreateModule,
+    AppRoutingModule,
+    NotFoundRoutingModule
   ]
 })
 export class AppModule {

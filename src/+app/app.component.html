@@ -1,39 +1,41 @@
-<nav class="navbar navbar-default" style="margin-bottom:0;">
-  <div class="container" style="padding:0;">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" routerLink="discover">
-        <img alt="Stitch Icon" src="https://cdn.heystitch.io/web/common/images/logos/logo-web.png">
-        <span>Stitch</span>
-      </a>
+<header>
+  <nav class="navbar navbar-default" style="margin-bottom:0;">
+    <div class="container" style="padding:0;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" routerLink="discover">
+          <img alt="Stitch Icon" src="https://cdn.heystitch.io/web/common/images/logos/logo-web.png">
+          <span>Stitch</span>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding-left: 25px;">
+          <li><button type="button" class="btn btn-primary navbar-btn">Sign up</button></li>
+          <li><button type="button" class="btn navbar-btn">Log in</button></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding: 0 7px;">
+          <li><button type="button" class="btn navbar-btn navbar-btn-icon"><i class="icon-search" style="font-size: 18px;"></i></button></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
+          <li><a routerLinkActive="router-link-active" routerLink="discover">Discover</a></li>
+          <li><a routerLinkActive="router-link-active" routerLink="about">Start a project</a></li>
+          <li><a routerLinkActive="router-link-active" routerLink="todo">About</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding-left: 25px;">
-        <li><button type="button" class="btn btn-primary navbar-btn">Sign up</button></li>
-        <li><button type="button" class="btn navbar-btn">Log in</button></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding: 0 7px;">
-        <li><button type="button" class="btn navbar-btn navbar-btn-icon"><i class="icon-search" style="font-size: 18px;"></i></button></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
-        <li><a routerLinkActive="router-link-active" routerLink="discover">Discover</a></li>
-        <li><a routerLinkActive="router-link-active" routerLink="about">Start a project</a></li>
-        <li><a routerLinkActive="router-link-active" routerLink="todo">About</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  </nav>
+</header>
 <main>
   <router-outlet></router-outlet>
 </main>
 <footer>
-  <section class="container" style="padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.25);">
-    <div class="row">
+  <section class="container" style="padding:0 0 20px;border-bottom:1px solid rgba(255,255,255,0.25);">
+    <div class="row" style="margin:0;">
       <nav class="col-xs-12 col-md-7" style="border-right:1px solid rgba(255,255,255,0.25);">
         <div class="row">
           <ul class="col-xs-6 col-md-3" style="padding:0;list-style:none;">

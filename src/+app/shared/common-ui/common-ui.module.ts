@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { CommonUIModule } from './common-ui/common-ui.module';
-import { ApiService } from './api.service';
-import { ModelService } from './model/model.service';
-
 const MODULES = [
   CommonModule,
   RouterModule,
@@ -23,8 +19,6 @@ const COMPONENTS = [
 ];
 
 const PROVIDERS = [
-  ModelService,
-  ApiService
 ]
 
 @NgModule({
@@ -41,10 +35,10 @@ const PROVIDERS = [
     ...COMPONENTS
   ]
 })
-export class SharedModule {
+export class CommonUIModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: SharedModule,
+      ngModule: CommonUIModule,
       providers: [
         ...PROVIDERS
       ]
