@@ -7,8 +7,8 @@ import { NewslettersComponent } from './newsletters/newsletters.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'login', component: ContactComponent },
-      { path: 'signup', component: NewslettersComponent }
+      { path: 'contact', component: ContactComponent },
+      { path: 'newsletters', component: NewslettersComponent }
     ])
   ]
 })

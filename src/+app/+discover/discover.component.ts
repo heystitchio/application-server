@@ -5,7 +5,7 @@ import { ModelService } from '../shared/model/model.service';
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.Emulated,
-  selector: 'home',
+  selector: 'discover',
   styleUrls: [ './discover.component.css' ],
   templateUrl: './discover.component.html'
 })

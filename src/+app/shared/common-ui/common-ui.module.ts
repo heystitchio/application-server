@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MainNavComponent } from './nav/nav.component';
+import { MainFooterComponent } from './footer/footer.component';
+
 const MODULES = [
   CommonModule,
   RouterModule,
@@ -15,7 +18,8 @@ const PIPES = [
 ];
 
 const COMPONENTS = [
-  // put shared components here
+  MainNavComponent,
+  MainFooterComponent
 ];
 
 const PROVIDERS = [

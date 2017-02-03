@@ -3,10 +3,10 @@ import { Component, Inject, ChangeDetectionStrategy, ViewEncapsulation } from '@
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.Emulated,
-  selector: 'not-found',
-  template: '404 component'
+  selector: 'who-we-are',
+  template: 'Who We Arecomponent'
 })
-export class NotFoundComponent {
+export class WhoWeAreComponent {
   constructor(@Inject('req') req: any) {
     console.log('req', req)
 

@@ -9,8 +9,8 @@ import { SupportComponent } from './support/support.component';
   imports: [
     RouterModule.forChild([
       { path: 'help', component: HelpComponent },
-      { path: 'explore/faq', component: FaqComponent },
-      { path: 'explore/support', component: SupportComponent }
+      { path: 'help/faq', component: FaqComponent },
+      { path: 'help/support', component: SupportComponent }
     ])
   ]
 })

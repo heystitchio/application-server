@@ -7,11 +7,14 @@ import { CommonUIModule } from './common-ui/common-ui.module';
 import { ApiService } from './api.service';
 import { ModelService } from './model/model.service';
 
+import { MetaSetterService } from './services/meta-setter.service';
+
 const MODULES = [
   CommonModule,
   RouterModule,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  CommonUIModule
 ];
 
 const PIPES = [
@@ -24,7 +27,8 @@ const COMPONENTS = [
 
 const PROVIDERS = [
   ModelService,
-  ApiService
+  ApiService,
+  MetaSetterService
 ]
 
 @NgModule({

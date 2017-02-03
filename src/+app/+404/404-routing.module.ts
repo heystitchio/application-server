@@ -6,7 +6,7 @@ import { NotFoundComponent } from './404.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: '/404', component: NotFoundComponent },
+      { path: '404', component: NotFoundComponent },
       { path: '**', redirectTo: '/404' }
     ])
   ]
