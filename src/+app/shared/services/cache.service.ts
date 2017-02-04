@@ -49,7 +49,7 @@ export class CacheService {
   }
 
   /**
-   * convert server json into out initial state
+   * convert server json into our initial state
    */
   rehydrate(json: any): void {
     Object.keys(json).forEach((key: string) => {

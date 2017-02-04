@@ -4,29 +4,19 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 
-import { CacheService  } from '../cache.service';
-import { ApiService  } from '../api.service';
-
-export function hashCodeString(str: string): string {
-  let hash = 0;
-  if (str.length === 0) {
-    return hash + '';
-  }
-  for (let i = 0; i < str.length; i++) {
-    let char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return hash + '';
-}
+import { CacheService  } from '../services/cache.service';
+import { HashService  } from '../services/hash.service';
+import { ApiService  } from '../services/api.service';
 
 // domain/feature service
 @Injectable()
 export class ModelService {
    // This is only one example of one Model depending on your domain
-  constructor(public _api: ApiService, public _cache: CacheService) {
-
-  }
+  constructor(
+    public _api: ApiService,
+    public _hash: HashService,
+    public _cache: CacheService,
+  ) { }
 
  /**
   * whatever domain/feature method name

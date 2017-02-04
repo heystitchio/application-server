@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Renderer, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
-import { ModelService } from '../shared/model/model.service';
+// import { ModelService } from '../shared/model/model.service';
 import { MetaSetterService } from '../shared/services/meta-setter.service';
 
 @Component({
@@ -13,20 +13,20 @@ import { MetaSetterService } from '../shared/services/meta-setter.service';
 export class DiscoverComponent implements AfterViewInit {
   data: any = {};
   constructor(
-    public model: ModelService,
+    // public model: ModelService,
     private metaSetter: MetaSetterService,
     public renderer: Renderer
   ) {
     // we need the data synchronously for the client to set the server response
     // we create another method so we have more control for testing
-    this.universalInit();
+    //this.universalInit();
   }
 
-  universalInit() {
+  /*universalInit() {
     this.model.get('/data.json').subscribe(data => {
       this.data = data;
     });
-  }
+  }*/
 
   ngAfterViewInit(): void {
       this.metaSetter.setMeta(
