@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { SingleProjectComponent } from './single/single-project.component';
 import { ProjectDashboardComponent } from './single/dashboard/project-dashboard.component';
+import { ProjectApplicationsComponent } from './single/application/project-applications.component';
+import { SingleApplicationComponent } from './single/application/single/single-application.component';
 import { ProjectRoutingModule } from './project-routing.module';
 
 @NgModule({
@@ -12,7 +14,9 @@ import { ProjectRoutingModule } from './project-routing.module';
   ],
   declarations: [
     SingleProjectComponent,
-    ProjectDashboardComponent
+    ProjectDashboardComponent,
+    ProjectApplicationsComponent,
+    SingleApplicationComponent
   ]
 })
 export class ProjectModule { }

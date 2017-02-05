@@ -1,7 +1,7 @@
-import { Component, AfterViewInit, Renderer, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
-// import { ModelService } from '../shared/model/model.service';
-import { MetaSetterService } from '../shared/services/meta-setter.service';
+import { Meta, MetaDefinition } from '../../angular2-meta';
+
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
@@ -12,14 +12,26 @@ import { MetaSetterService } from '../shared/services/meta-setter.service';
 })
 export class DiscoverComponent implements AfterViewInit {
   data: any = {};
+  meta: MetaDefinition[] = [];
+
   constructor(
-    // public model: ModelService,
-    private metaSetter: MetaSetterService,
-    public renderer: Renderer
+    private _meta: Meta,
   ) {
     // we need the data synchronously for the client to set the server response
     // we create another method so we have more control for testing
     //this.universalInit();
+
+    this.meta = [
+      { name: 'description', content: 'Set by meta setter service', id: 'desc' },
+      // Twitter
+      { name: 'twitter:title', content: 'Set by meta setter service' },
+      // Google+
+      { itemprop: 'name', content: 'Set by meta setter service' },
+      { itemprop: 'description', content: 'Set by meta setter service' },
+      // Facebook / Open Graph
+      { property: 'fb:app_id', content: 'Set by meta setter service' },
+      { property: 'og:title', content: 'Set by meta setter service' }
+    ];
   }
 
   /*universalInit() {
@@ -28,26 +40,9 @@ export class DiscoverComponent implements AfterViewInit {
     });
   }*/
 
-  ngAfterViewInit(): void {
-      this.metaSetter.setMeta(
-        this.renderer,
-        'Stitch » Discover',
-        {
-          author: 'Stitch',
-          description: 'Test description set by the meta service.'
-        },
-        {
-          url: 'heystitch.io',
-          title: 'Stitch',
-          description: 'Test description set by the meta service.',
-          image: 'https://placehold.it/350x150'
-        },
-        {
-          creator: 'Stitch Online Services',
-          title: 'Stitch',
-          description: 'Test description set by the meta service.',
-          image: 'https://placehold.it/350x150'
-        });
+  ngAfterViewInit() {
+    this._meta.setTitle('Discover')
+    //this._meta.updateTags(this.meta);
   }
 
 }

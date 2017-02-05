@@ -55,6 +55,11 @@ export interface MetaDefinition {
 export class Meta {
   private _dom: DomAdapter = getDOM();
 
+  setTitle(title: string): void {
+    var titleEl = this._dom.query(`title`);
+    this._dom.setText(titleEl, `Stitch » ${title}`);
+  }
+
   /**
    * Adds a new meta tag to the dom.
    *
@@ -117,6 +122,18 @@ export class Meta {
       return this._addInternal(tag);
     }
     return this._prepareMetaElement(tag, meta);
+  }
+
+  updateTags(tags: MetaDefinition[]): void {
+    for (var i = 0; i < tags.length; i++) {
+      if ('name' in tags[i]) {
+        this.updateTag(`name="${tags[i].name}"`, tags[i]);
+      } else if ('property' in tags[i]) {
+        this.updateTag(`property="${tags[i].property}"`, tags[i]);
+      } else if ('itemprop' in tags[i]) {
+        this.updateTag(`itemprop="${tags[i].itemprop}"`, tags[i]);
+      }
+    }
   }
 
   /**
