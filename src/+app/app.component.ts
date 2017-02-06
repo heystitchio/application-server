@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
-import { MetaSetterService } from './shared/services/meta-setter.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,

@@ -6,11 +6,11 @@ import { IdlePreload, IdlePreloadModule } from '@angularclass/idle-preload';
 
 import { AppModule, AppComponent } from './+app/app.module';
 import { SharedModule } from './+app/shared/shared.module';
-import { CacheService } from './+app/shared/services/cache.service';
+import { CacheService } from './+app/shared/cache/cache.service';
 
 // Will be merged into @angular/platform-browser in a later release
 // see https://github.com/angular/angular/pull/12322
-import { Meta } from './angular2-meta';
+import { MetaService } from './+app/shared/meta/meta.service';
 
 // import * as LRU from 'modern-lru';
 
@@ -56,7 +56,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
 
     CacheService,
 
-    Meta,
+    MetaService,
 
     // { provide: AUTO_PREBOOT, useValue: false } // turn off auto preboot complete
   ]

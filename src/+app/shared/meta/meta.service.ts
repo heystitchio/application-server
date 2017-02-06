@@ -19,7 +19,7 @@ export interface MetaDefinition {
 
 
 @Injectable()
-export class Meta {
+export class MetaService {
   private _dom: DomAdapter = getDOM();
 
   constructor(

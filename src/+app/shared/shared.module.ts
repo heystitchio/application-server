@@ -4,9 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonUIModule } from './common-ui/common-ui.module';
-import { ApiService } from './services/api.service';
-import { HashService } from './services/hash.service';
-import { MetaSetterService } from './services/meta-setter.service';
+import { ApiService } from './cache/api.service';
+import { HashService } from './cache/hash.service';
 
 import { ApplicationService } from './model/application/application.service';
 import { ChatService } from './model/chat/chat.service';
@@ -50,8 +49,7 @@ const PROVIDERS = [
   TeamService,
   UserService,
   ApiService,
-  HashService,
-  MetaSetterService
+  HashService
 ]
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
-import { Meta, MetaDefinition } from '../../angular2-meta';
+import { MetaService, MetaDefinition } from '../shared/meta/meta.service';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class DiscoverComponent implements AfterViewInit {
   meta: MetaDefinition[] = [];
 
   constructor(
-    private _meta: Meta,
+    private _meta: MetaService,
   ) {
     // we need the data synchronously for the client to set the server response
     // we create another method so we have more control for testing
