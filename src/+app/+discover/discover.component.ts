@@ -42,7 +42,7 @@ export class DiscoverComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this._meta.setTitle('Discover')
-    //this._meta.updateTags(this.meta);
+    this._meta.addTags(this.meta);
   }
 
 }
