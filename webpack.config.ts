@@ -42,6 +42,10 @@ export var commonConfig = {
   },
   plugins: [
     // Use commonPlugins.
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
   ]
 
 };

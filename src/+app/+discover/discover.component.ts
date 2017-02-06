@@ -1,6 +1,10 @@
 import { Component, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { isBrowser } from 'angular2-universal';
 
 import { MetaService, MetaDefinition } from '../shared/meta/meta.service';
+
+import * as $ from 'jquery';
+declare var Swiper:any;
 
 
 @Component({
@@ -19,7 +23,7 @@ export class DiscoverComponent implements AfterViewInit {
   ) {
     // we need the data synchronously for the client to set the server response
     // we create another method so we have more control for testing
-    //this.universalInit();
+    this.universalInit();
 
     this.meta = [
       { name: 'description', content: 'Set by meta setter service', id: 'desc' },
@@ -34,11 +38,15 @@ export class DiscoverComponent implements AfterViewInit {
     ];
   }
 
-  /*universalInit() {
-    this.model.get('/data.json').subscribe(data => {
-      this.data = data;
-    });
-  }*/
+  universalInit() {
+    if (isBrowser) {
+      $(document).ready(function () {
+        var mainSwiper = new Swiper ('.swiper-main', {
+          loop: true
+        })
+      });
+    }
+  }
 
   ngAfterViewInit() {
     this._meta.setTitle('Discover')

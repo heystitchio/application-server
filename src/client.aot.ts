@@ -4,6 +4,10 @@ import 'ts-helpers';
 import './__workaround.browser'; // temporary until 2.1.1 things are patched in Core
 import './+app/shared/lib/rxjs-operators';
 
+// Plugins
+import * as $ from 'jquery';
+import 'swiper';
+
 // Angular 2
 import { enableProdMode } from '@angular/core';
 import { platformBrowser } from '@angular/platform-browser';
@@ -24,11 +28,11 @@ export const platformRef = platformBrowser();
 export function main() {
   // Load fonts async
   // https://github.com/typekit/webfontloader#configuration
-  //loadWebFont({
-    //google: {
-      //families: ['Droid Sans']
-    //}
-  //});
+  loadWebFont({
+    google: {
+      families: ['Open Sans']
+    }
+  });
 
   return platformRef.bootstrapModuleFactory(MainModuleNgFactory);
 }

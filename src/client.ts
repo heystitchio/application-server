@@ -4,6 +4,10 @@ import 'ts-helpers';
 import './__workaround.browser'; // temporary until 2.1.1 things are patched in Core
 import './+app/shared/lib/rxjs-operators';
 
+// Plugins
+import * as $ from 'jquery';
+import 'swiper';
+
 // Angular 2
 import { enableProdMode } from '@angular/core';
 import { platformUniversalDynamic } from 'angular2-universal/browser';
@@ -12,7 +16,7 @@ import { bootloader } from '@angularclass/bootloader';
 import { load as loadWebFont } from 'webfontloader';
 
 // enable prod for faster renders
-// enableProdMode();
+enableProdMode();
 
 import { MainModule } from './browser.module';
 
@@ -22,11 +26,11 @@ export const platformRef = platformUniversalDynamic();
 export function main() {
   // Load fonts async
   // https://github.com/typekit/webfontloader#configuration
-  //loadWebFont({
-    //google: {
-      //families: ['Droid Sans']
-    //}
-  //});
+  loadWebFont({
+    google: {
+      families: ['Open Sans']
+    }
+  });
 
   return platformRef.bootstrapModule(MainModule);
 }
