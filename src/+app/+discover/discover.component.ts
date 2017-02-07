@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation } 
 import { isBrowser } from 'angular2-universal';
 
 import { MetaService, MetaDefinition } from '../shared/meta/meta.service';
+import { ApiService } from '../shared/cache/api.service';
 
 import * as $ from 'jquery';
 declare var Swiper:any;
@@ -15,11 +16,12 @@ declare var Swiper:any;
   templateUrl: './discover.component.html'
 })
 export class DiscoverComponent implements AfterViewInit {
-  data: any = {};
+  projects: any = {};
   meta: MetaDefinition[] = [];
 
   constructor(
     private _meta: MetaService,
+    private _api: ApiService
   ) {
     // we need the data synchronously for the client to set the server response
     // we create another method so we have more control for testing
@@ -39,11 +41,24 @@ export class DiscoverComponent implements AfterViewInit {
   }
 
   universalInit() {
+    this._api.get('project', 5, 10).subscribe(data => {
+      this.projects = data;
+    });
     if (isBrowser) {
       $(document).ready(function () {
         var mainSwiper = new Swiper ('.swiper-main', {
-          loop: true
-        })
+          loop: true,
+          autoplay: 8000,
+          pagination: '.swiper-main-pagination',
+          paginationClickable: true
+        });
+        var exploreSwiper = new Swiper ('.swiper-explore', {
+          direction: 'vertical',
+          loop: true,
+          autoplay: 8000,
+          pagination: '.swiper-explore-pagination',
+          paginationClickable: true
+        });
       });
     }
   }

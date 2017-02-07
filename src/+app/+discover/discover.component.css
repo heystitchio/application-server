@@ -1,8 +1,24 @@
-blockquote {
-  border-left:5px #158126 solid;
-  background:#fff;
-  padding:20px 20px 20px 40px;
+.card {
+  height: 320px;
 }
-blockquote::before {
-  left: 1em;
+
+.swiper-main,
+.swiper-explore {
+  position: relative;
+}
+
+.swiper-wrapper {
+  padding: 0;
+  list-style: none;
+}
+
+.swiper-main {
+  background-color: #ccc;
+  height: 650px;
+  overflow: hidden;
+}
+
+.swiper-explore {
+  height: 340px;
+  overflow: hidden;
 }
