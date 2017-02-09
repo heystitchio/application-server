@@ -1,7 +1,3 @@
-<!---<ul>
-  <li *ngFor="let project of projects">{{project.name}}</li>
-</ul>-->
-
 <section>
   <h1 class="sr-only">Explore Stitch</h1>
   <article>
@@ -9,11 +5,9 @@
       <h1 class="sr-only">What's new at Stitch?</h1>
       <div class="swiper-container swiper-main">
         <ul class="swiper-wrapper">
-          <li class="swiper-slide"><h3>1</h3></li>
-          <li class="swiper-slide"><h3>2</h3></li>
-          <li class="swiper-slide"><h3>3</h3></li>
-          <li class="swiper-slide"><h3>4</h3></li>
-          <li class="swiper-slide"><h3>5</h3></li>
+          <li class="swiper-slide" *ngFor="let slide of slides">
+            <h3>{{ slide.name }}</h3>
+          </li>
         </ul>
         <div class="swiper-pagination swiper-main-pagination"></div>
       </div>
@@ -107,43 +101,13 @@
 <section class="container">
   <h5>Recommended</h5>
   <main class="row">
-    <div class="col-md-3">
+    <div class="col-md-3" *ngFor="let project of recommended">
       <div class="card">
-        <img class="card-img-top" src="https://placehold.it/262x140" alt="Card image cap">
+        <img class="card-img-top" [src]="project.bannerUrl" alt="Project banner image." height="140">
         <div class="card-block">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <img class="card-img-top" src="https://placehold.it/262x140" alt="Card image cap">
-        <div class="card-block">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <img class="card-img-top" src="https://placehold.it/262x140" alt="Card image cap">
-        <div class="card-block">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <img class="card-img-top" src="https://placehold.it/262x140" alt="Card image cap">
-        <div class="card-block">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          <h4 class="card-title">{{ project.name }}</h4>
+          <p class="card-text">{{ project.desc }}</p>
+          <p class="card-text"><small class="text-muted">{{ project.created }}</small></p>
         </div>
       </div>
     </div>

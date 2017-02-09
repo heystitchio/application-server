@@ -1,8 +1,15 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpModule,
+         JsonpModule }           from '@angular/http';
 import { UniversalModule, isBrowser, isNode, AUTO_PREBOOT } from 'angular2-universal/browser'; // for AoT we need to manually split universal packages
 import { IdlePreload, IdlePreloadModule } from '@angularclass/idle-preload';
+
+// In Memory Data Api w/ Mocks
+// This hikes the HttpModule operators, only use in development.
+import { InMemoryWebApiModule }  from 'angular-in-memory-web-api';
+import { MockData }              from './+app/shared/mock/mock-data.service';
 
 import { AppModule, AppComponent } from './+app/app.module';
 import { SharedModule } from './+app/shared/shared.module';
@@ -39,10 +46,17 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     UniversalModule, // BrowserModule, HttpModule, and JsonpModule are included
 
     FormsModule,
+    HttpModule,
+    JsonpModule,
+
+    // In Memory Data Api w/ Mocks
+    // This hikes the HttpModule operators, only use in development.
+    InMemoryWebApiModule.forRoot(MockData, { delay: 500 }),
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
 
     IdlePreloadModule.forRoot(),
     SharedModule.forRoot(),
+
     AppModule,
   ],
   providers: [

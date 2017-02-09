@@ -27,7 +27,7 @@ export class ProjectService {
       return Observable.of(this._cache.get(key));
     }
     // you probably shouldn't .share() and you should write the correct logic
-    return this._api.get('project', begin, end)
+    return this._api.get('api/projects')
       .do(json => {
         this._cache.set(key, json);
       })

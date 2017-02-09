@@ -55,6 +55,7 @@
     "@ngrx/store": "^2.2.1",
     "@types/jquery": "^2.0.40",
     "@types/slick-carousel": "^1.6.31",
+    "angular-in-memory-web-api": "^0.2.1",
     "angular2-express-engine": "~2.1.0-rc.1",
     "angular2-platform-node": "~2.1.0-rc.1",
     "angular2-universal": "~2.1.0-rc.1",

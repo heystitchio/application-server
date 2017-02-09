@@ -27,7 +27,7 @@ export class UserService {
       return Observable.of(this._cache.get(key));
     }
     // you probably shouldn't .share() and you should write the correct logic
-    return this._api.get('user', begin, end)
+    return this._api.get('api/users')
       .do(json => {
         this._cache.set(key, json);
       })
