@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 import { isNode } from 'angular2-universal';
 
 import { CacheService  } from './cache.service';
@@ -52,41 +49,55 @@ export class ApiService {
     // note: you probably shouldn't .share() and you should write the correct logic
 
     return this.parseDb(context, begin, end)
-        .do(json => { if (isNode) { this._cache.set(key, json); } })
-        .share();
+      .do(json => { if (isNode) { this._cache.set(key, json); } })
+      .share();
   }
 
   parseDb(context: string, begin?: number, end?: number): Observable<any> {
+    var data = [];
+
     switch(context) {
       case "application":
-        return this.mapJson(APPLICATIONS.slice(begin, end));
+        data = APPLICATIONS.slice(begin, end);
+        return Observable.of(new Object()).map(data =>JSON.stringify(data));
       case "chat":
-        return this.mapJson(CHATS.slice(begin, end));
+        data = CHATS.slice(begin, end);
+        return this.mapJson(data);
       case "file":
-        return this.mapJson(FILES.slice(begin, end));
+        data = FILES.slice(begin, end);
+        return this.mapJson(data);
       case "message":
-        return this.mapJson(MESSAGES.slice(begin, end));
+        data = MESSAGES.slice(begin, end);
+        return this.mapJson(data);
       case "milestone":
-        return this.mapJson(MILESTONES.slice(begin, end));
+        data = MILESTONES.slice(begin, end);
+        return this.mapJson(data);
       case "post":
-        return this.mapJson(POSTS.slice(begin, end));
+        data = POSTS.slice(begin, end);
+        return this.mapJson(data);
       case "project":
-        return this.mapJson(PROJECTS.slice(begin, end));
+        data = PROJECTS.slice(begin, end);
+        return Observable.of(new Object()).map(data =>JSON.stringify(data));
       case "role":
-        return this.mapJson(ROLES.slice(begin, end));
+        data = ROLES.slice(begin, end);
+        return this.mapJson(data);
       case "task":
-        return this.mapJson(TASKS.slice(begin, end));
+        data = TASKS.slice(begin, end);
+        return this.mapJson(data);
       case "team":
-        return this.mapJson(TEAMS.slice(begin, end));
+        data = TEAMS.slice(begin, end);
+        return this.mapJson(data);
       case "user":
-        return this.mapJson(USERS.slice(begin, end));
+        data = USERS.slice(begin, end);
+        return this.mapJson(data);
       default:
-        return this.mapJson('');
+        return this.mapJson(data);
     }
   }
 
   mapJson(object) {
     return object
+      .map(res => res.json())
       .catch(err => {
         console.log('Error: ', err);
         return Observable.throw(err);

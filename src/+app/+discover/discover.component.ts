@@ -43,6 +43,7 @@ export class DiscoverComponent implements AfterViewInit {
   universalInit() {
     this._api.get('project', 5, 10).subscribe(data => {
       this.projects = data;
+      console.log(data);
     });
     if (isBrowser) {
       $(document).ready(function () {
