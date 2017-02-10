@@ -8,8 +8,8 @@ import { IdlePreload, IdlePreloadModule } from '@angularclass/idle-preload';
 
 // In Memory Data Api w/ Mocks
 // This hikes the HttpModule operators, only use in development.
-import { InMemoryWebApiModule }  from 'angular-in-memory-web-api';
-import { MockData }              from './+app/shared/mock/mock-data.service';
+//import { InMemoryWebApiModule }  from 'angular-in-memory-web-api';
+//import { MockData }              from './+app/shared/mock/mock-data.service';
 
 import { AppModule, AppComponent } from './+app/app.module';
 import { SharedModule } from './+app/shared/shared.module';
@@ -51,7 +51,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
 
     // In Memory Data Api w/ Mocks
     // This hikes the HttpModule operators, only use in development.
-    InMemoryWebApiModule.forRoot(MockData, { delay: 500 }),
+    //InMemoryWebApiModule.forRoot(MockData, { delay: 500 }),
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
 
     IdlePreloadModule.forRoot(),

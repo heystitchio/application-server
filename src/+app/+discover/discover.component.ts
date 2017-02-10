@@ -47,23 +47,25 @@ export class DiscoverComponent implements OnInit {
   }
 
   universalInit(): void {
-    this._api.get('api/projects/?name=^j').subscribe(res => {
+    this._api.get('http://swapi.co/api/planets/').subscribe(res => {
       this.slides = res.data;
-      this.initSlider('main', {
-        loop: true,
-        autoplay: 8000,
-        pagination: '.swiper-main-pagination',
-        paginationClickable: true
-      });
+      if (isBrowser) {
+        this.initSlider('main', {
+          loop: true,
+          autoplay: 8000,
+          pagination: '.swiper-main-pagination',
+          paginationClickable: true
+        });
+      }
     });
 
-    this._api.get('api/projects/?name=^a').subscribe(res => {
+    /*this._api.get('api/projects/?name=^a').subscribe(res => {
       this.recommended = res.data;
     });
 
     this._api.get('api/users').subscribe(res => {
       this.users = res.data;
-    });
+    });*/
   
   }
 
