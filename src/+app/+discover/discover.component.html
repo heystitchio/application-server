@@ -10,6 +10,8 @@
           </li>
         </ul>
         <div class="swiper-pagination swiper-main-pagination"></div>
+        <div class="swiper-button-prev swiper-main-button-prev"></div>
+        <div class="swiper-button-next swiper-main-button-next"></div>
       </div>
     </section>
   </article>
@@ -110,6 +112,14 @@
           <p class="card-text"><small class="text-muted">{{ project.created }}</small></p>
         </div>
       </div>
+    </div>
+  </main>
+</section>
+<section class="container">
+  <h5>Recommended</h5>
+  <main class="row">
+    <div class="col-md-2" *ngFor="let user of users" style="text-align:center;">
+      <h3>{{ user.name }}</h3>
     </div>
   </main>
 </section>

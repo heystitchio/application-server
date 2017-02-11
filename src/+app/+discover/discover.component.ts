@@ -19,7 +19,7 @@ declare var Swiper:any;
   templateUrl: './discover.component.html'
 })
 export class DiscoverComponent implements OnInit {
-  slides: any[] = [];
+  slides: Project[] = [];
   explore: Project[] = [];
   recommended: Project[] = [];
   users: User[] = [];
@@ -54,6 +54,8 @@ export class DiscoverComponent implements OnInit {
           loop: true,
           autoplay: 8000,
           pagination: '.swiper-main-pagination',
+          prevButton: '.swiper-main-button-prev',
+          nextButton: '.swiper-main-button-next',
           paginationClickable: true
         });
       }
