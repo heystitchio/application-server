@@ -59,13 +59,13 @@ export class DiscoverComponent implements OnInit {
       }
     });
 
-    /*this._api.get('api/projects/?name=^a').subscribe(res => {
-      this.recommended = res.data;
+    this._api.get('http://swapi.co/api/species/').subscribe(res => {
+      this.recommended = res.results;
     });
 
-    this._api.get('api/users').subscribe(res => {
-      this.users = res.data;
-    });*/
+    this._api.get('http://swapi.co/api/people/').subscribe(res => {
+      this.users = res.results;
+    });
   
   }
 
