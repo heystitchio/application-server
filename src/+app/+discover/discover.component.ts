@@ -48,7 +48,7 @@ export class DiscoverComponent implements OnInit {
 
   universalInit(): void {
     this._api.get('http://swapi.co/api/planets/').subscribe(res => {
-      this.slides = res.data;
+      this.slides = res.results;
       if (isBrowser) {
         this.initSlider('main', {
           loop: true,
