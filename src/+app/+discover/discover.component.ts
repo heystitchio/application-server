@@ -53,6 +53,7 @@ export class DiscoverComponent implements OnInit {
         this.initSlider('main', {
           loop: true,
           autoplay: 8000,
+          autoplayDisableOnInteraction: false,
           pagination: '.swiper-main-pagination',
           prevButton: '.swiper-main-button-prev',
           nextButton: '.swiper-main-button-next',
@@ -81,6 +82,7 @@ export class DiscoverComponent implements OnInit {
           direction: 'vertical',
           loop: true,
           autoplay: 8000,
+          autoplayDisableOnInteraction: false,
           pagination: '.swiper-explore-pagination',
           paginationClickable: true
         });

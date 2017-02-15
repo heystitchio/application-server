@@ -39,10 +39,10 @@ const PROVIDERS = [
     ...COMPONENTS
   ]
 })
-export class CommonUIModule {
+export class SharedComponentsModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: CommonUIModule,
+      ngModule: SharedComponentsModule,
       providers: [
         ...PROVIDERS
       ]
