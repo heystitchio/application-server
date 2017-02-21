@@ -9,7 +9,7 @@
         </button>
         <a class="navbar-brand" routerLink="discover">
           <img alt="Stitch Icon" src="https://cdn.heystitch.io/web/common/images/logos/logo-web.png">
-          <span>Stitch</span>
+          <span class="sr-only">Stitch</span>
         </a>
       </div>
       <div class="collapse navbar-collapse">
@@ -18,7 +18,22 @@
           <li><button type="button" class="btn navbar-btn" routerLink="login">Log in</button></li>
         </ul>
         <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding: 0 7px;">
-          <li><button type="button" class="btn navbar-btn navbar-btn-icon"><i class="icon-search" style="font-size: 18px;" routerLink="search"></i></button></li>
+          <li><button type="button" class="btn navbar-btn navbar-btn-icon navbar-btn-icon-bell active">
+            <i class="icon-bell" style="font-size: 18px;" routerLink="search"></i>
+            <span class="sr-only">Notifications</span>
+          </button></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding: 0 7px;">
+          <li><button type="button" class="btn navbar-btn navbar-btn-icon navbar-btn-icon-message active">
+            <i class="icon-message" style="font-size: 18px;"></i>
+            <span class="sr-only">Messages</span>
+          </button></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding: 0 7px;">
+          <li><button type="button" class="btn navbar-btn navbar-btn-icon">
+            <i class="icon-search" style="font-size: 18px;"></i>
+            <span class="sr-only">Search...</span>
+          </button></li>
         </ul>
         <ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
           <li><a routerLinkActive="router-link-active" routerLink="discover">Discover</a></li>

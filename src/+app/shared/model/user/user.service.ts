@@ -19,15 +19,14 @@ export class UserService {
     public _cache: CacheService,
   ) {}
 
-  get(begin, end): Observable<User[]> {
+  get(query): Observable<User[]> {
 
-    let key = this._hash.hashCodeString(`user ${begin} ${end}`);
+    let key = this._hash.hashCodeString(query);
 
     if (this._cache.has(key)) {
       return Observable.of(this._cache.get(key));
     }
-    // you probably shouldn't .share() and you should write the correct logic
-    return this._api.get('api/users')
+    return this._api.get(query)
       .do(json => {
         this._cache.set(key, json);
       })

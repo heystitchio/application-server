@@ -1,1 +1,9 @@
 .router-link-active {border-color:#51677a;}
+
+.navbar-btn-icon {position:relative;}
+
+.navbar-btn-icon.active:after {content:'';position:absolute;top:0px;right:10px;height:7px;width:7px;border:2px solid;border-radius:50px;}
+
+.navbar-btn-icon-message.active:after {border-color: #39f;}
+
+.navbar-btn-icon-bell.active:after {border-color: #fb617f;}

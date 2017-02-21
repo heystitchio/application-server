@@ -1,4 +1,7 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component,
+         ChangeDetectionStrategy,
+         ViewEncapsulation }      from '@angular/core';
+import { Router }                 from '@angular/router';
 
 
 @Component({
@@ -8,4 +11,8 @@ import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/
   styleUrls: ['./app.component.css'],
   templateUrl: './app.component.html'
 })
-export class AppComponent { }
+export class AppComponent {
+  constructor(
+    public _router: Router
+  ){}
+}

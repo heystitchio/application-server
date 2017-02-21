@@ -3,6 +3,7 @@ import { isBrowser } from 'angular2-universal';
 
 import { MetaService, MetaDefinition } from '../shared/meta/meta.service';
 import { ApiService } from '../shared/cache/api.service';
+import gql from 'graphql-tag';
 
 import { Project } from '../shared/model/project/project';
 import { User } from '../shared/model/user/user';

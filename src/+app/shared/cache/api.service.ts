@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { isNode } from 'angular2-universal';
+
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 import { CacheService  } from './cache.service';
 import { HashService  } from './hash.service';
@@ -11,16 +13,16 @@ import { HashService  } from './hash.service';
 export class ApiService {
 
   constructor(
-    public _http: Http,
+    public _apollo: Apollo,
     public _cache: CacheService,
     private _hash: HashService
   ) {}
 
-  get(url, autoClear: boolean = true) {
+  get(query, autoClear: boolean = true) {
     // You want to return the cache if there is a response in it. 
     // This would cache the first response so if your API isn't idempotent you probably want to 
     // remove the item from the cache after you use it. LRU of 1 
-    let key = this._hash.hashCodeString(url);
+    let key = this._hash.hashCodeString(query);
 
     if (this._cache.has(key)) {
 
@@ -39,8 +41,7 @@ export class ApiService {
 
     // note: you probably shouldn't .share() and you should write the correct logic
 
-    return this._http.get(url)
-      .map(res => res.json())
+    return this._apollo.watchQuery(query)
       .do(json => { if (isNode) { this._cache.set(key, json); } })
       .share();
   }

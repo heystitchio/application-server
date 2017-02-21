@@ -1,14 +1,15 @@
 import { NgModule }          from '@angular/core';
 import { FormsModule }       from '@angular/forms';
 import { RouterModule }      from '@angular/router';
-import { HttpModule,
-         JsonpModule }       from '@angular/http';
 import { UniversalModule,
          isBrowser,
          isNode,
          AUTO_PREBOOT }      from 'angular2-universal/browser';
 import { IdlePreload,
          IdlePreloadModule } from '@angularclass/idle-preload';
+import { ApolloClient }      from 'apollo-client';
+import { ApolloModule }      from 'apollo-angular';
+import { client }            from './apollo.browser';
 
 import { AppModule,
          AppComponent }      from './+app/app.module';
@@ -39,9 +40,8 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
   imports: [
     UniversalModule,
     FormsModule,
-    HttpModule,
-    JsonpModule,
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
+    ApolloModule.forRoot(() => client),
 
     IdlePreloadModule.forRoot(),
     SharedModule.forRoot(),

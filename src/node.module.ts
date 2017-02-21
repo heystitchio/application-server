@@ -3,13 +3,17 @@ import { FormsModule }    from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 import { UniversalModule,
          isBrowser,
-        isNode }          from 'angular2-universal/node';
+         isNode }         from 'angular2-universal/node';
+import { ApolloClient } from 'apollo-client';
+import { ApolloModule }   from 'apollo-angular';
+import { client }         from './apollo.node';
 
 import { AppModule,
          AppComponent }   from './+app/app.module';
 import { SharedModule }   from './+app/shared/shared.module';
 import { CacheService }   from './+app/shared/cache/cache.service';
 import { MetaService }    from './+app/shared/meta/meta.service';
+
 
 export function getLRU() {
   return new Map();
@@ -31,6 +35,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     UniversalModule,
     FormsModule,
     RouterModule.forRoot([], { useHash: false }),
+    ApolloModule.forRoot(() => client),
 
     SharedModule.forRoot(),
     AppModule,
@@ -54,7 +59,7 @@ export class MainModule {
   ) {}
 
   universalDoDehydrate = (universalCache) => {
-    universalCache[CacheService.KEY] = JSON.stringify(this.cache.dehydrate());
+    universalCache['__APOLLO_STATE__'] = {apollo: {data: client.store.getState().apollo.data}};
   }
 
   universalAfterDehydrate = () => {
