@@ -11,6 +11,6 @@ export const client = new ApolloClient({
   ssrMode: true
 });
 
-export const provideClient = function() {
+export function provideClient() {
   return client;
 }

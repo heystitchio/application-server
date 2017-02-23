@@ -11,6 +11,6 @@ export const client = new ApolloClient({
   initialState: window['UNIVERSAL_CACHE'].__APOLLO_STATE__
 });
 
-export const provideClient = function() {
+export function provideClient() {
   return client;
 }

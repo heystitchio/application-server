@@ -7,7 +7,7 @@ import { UniversalModule,
 import { ApolloClient }   from 'apollo-client';
 import { ApolloModule }   from 'apollo-angular';
 import { client,
-         provideClient }  from './apollo.browser';
+         provideClient }  from './apollo.node';
 
 import { AppModule,
          AppComponent }   from './+app/app.module';
