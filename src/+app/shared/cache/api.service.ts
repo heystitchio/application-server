@@ -2,8 +2,8 @@ import { Injectable }            from '@angular/core';
 import { Observable }            from 'rxjs/Observable';
 import { isNode }                from 'angular2-universal';
 
-import { Angular2Apollo,
-         ApolloQueryObservable } from 'angular2-apollo';
+import { Apollo,
+         ApolloQueryObservable } from 'apollo-angular';
 import { ApolloQueryResult }     from 'apollo-client';
 import gql                       from 'graphql-tag';
 
@@ -15,7 +15,7 @@ import { HashService  }          from './hash.service';
 export class ApiService {
 
   constructor(
-    public _apollo: Angular2Apollo,
+    public _apollo: Apollo,
     public _cache: CacheService,
     private _hash: HashService
   ) {}

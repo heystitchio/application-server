@@ -8,7 +8,7 @@ import { UniversalModule,
 import { IdlePreload,
          IdlePreloadModule } from '@angularclass/idle-preload';
 import { ApolloClient }      from 'apollo-client';
-import { ApolloModule }      from 'angular2-apollo';
+import { ApolloModule }      from 'apollo-angular';
 import { client }            from './apollo.browser';
 
 import { AppModule,
@@ -41,7 +41,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     UniversalModule,
     FormsModule,
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
-    ApolloModule.withClient(client),
+    ApolloModule.withClient(() => client),
 
     IdlePreloadModule.forRoot(),
     SharedModule.forRoot(),
