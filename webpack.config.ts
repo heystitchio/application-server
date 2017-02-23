@@ -44,7 +44,8 @@ export var commonConfig = {
     // Use commonPlugins.
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery'
+      jQuery: 'jquery',
+      auth0: 'auth0-js'
     })
   ]
 

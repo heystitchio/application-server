@@ -18,6 +18,8 @@ import { SharedModule }      from './+app/shared/shared.module';
 import { CacheService }      from './+app/shared/cache/cache.service';
 import { MetaService }       from './+app/shared/meta/meta.service';
 
+import './+app/shared/lib/rxjs-operators';
+
 // import * as LRU from 'modern-lru';
 
 export function getLRU(lru?: any) {

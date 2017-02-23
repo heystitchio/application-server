@@ -1,14 +1,17 @@
-import { Component, Inject, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component,
+         Inject,
+         ChangeDetectionStrategy,
+         ViewEncapsulation }      from '@angular/core';
+import { AuthService }            from '../../shared/services/auth.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.Emulated,
   selector: 'login',
-  template: 'Login component'
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  constructor(@Inject('req') req: any) {
-    console.log('req', req)
-
-  }
+  constructor(
+    public _auth: AuthService
+  ) {}
 }

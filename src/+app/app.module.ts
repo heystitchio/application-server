@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
-import { applicationReducer } from './shared/model/application/application.reducer';
+import { applicationReducer } from './shared/models/application/application.reducer';
 
 import { AboutModule } from './+about/about.module';
 import { AuthModule } from './+auth/auth.module';

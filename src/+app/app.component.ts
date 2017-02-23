@@ -2,6 +2,7 @@ import { Component,
          ChangeDetectionStrategy,
          ViewEncapsulation }      from '@angular/core';
 import { Router }                 from '@angular/router';
+import { AuthService }            from './shared/services/auth.service'
 
 
 @Component({
@@ -13,6 +14,9 @@ import { Router }                 from '@angular/router';
 })
 export class AppComponent {
   constructor(
-    public _router: Router
-  ){}
+    public _router: Router,
+    private _auth: AuthService
+  ){
+    this._auth.handleAuthentication();
+  }
 }

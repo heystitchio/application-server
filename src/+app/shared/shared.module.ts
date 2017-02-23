@@ -9,17 +9,7 @@ import { SharedComponentsModule } from './components/components.module';
 import { ApiService }             from './cache/api.service';
 import { HashService }            from './cache/hash.service';
 
-import { ApplicationService }     from './model/application/application.service';
-import { ChatService }            from './model/chat/chat.service';
-import { FileService }            from './model/file/file.service';
-import { MessageService }         from './model/message/message.service';
-import { MilestoneService }       from './model/milestone/milestone.service';
-import { PostService }            from './model/post/post.service';
-import { ProjectService }         from './model/project/project.service';
-import { RoleService }            from './model/role/role.service';
-import { TaskService }            from './model/task/task.service';
-import { TeamService }            from './model/team/team.service';
-import { UserService }            from './model/user/user.service';
+import { AuthService }            from './services/auth.service';
 
 
 const MODULES = [
@@ -39,19 +29,9 @@ const COMPONENTS = [
 ];
 
 const PROVIDERS = [
-  ApplicationService,
-  ChatService,
-  FileService,
-  MessageService,
-  MilestoneService,
-  PostService,
-  ProjectService,
-  RoleService,
-  TaskService,
-  TeamService,
-  UserService,
   ApiService,
-  HashService
+  HashService,
+  AuthService
 ]
 
 @NgModule({
