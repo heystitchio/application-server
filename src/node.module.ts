@@ -6,7 +6,8 @@ import { UniversalModule,
          isNode }         from 'angular2-universal/node';
 import { ApolloClient }   from 'apollo-client';
 import { ApolloModule }   from 'apollo-angular';
-import { client }         from './apollo.node';
+import { client,
+         provideClient }  from './apollo.browser';
 
 import { AppModule,
          AppComponent }   from './+app/app.module';
@@ -35,7 +36,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     UniversalModule,
     FormsModule,
     RouterModule.forRoot([], { useHash: false }),
-    ApolloModule.withClient(() => client),
+    ApolloModule.withClient(provideClient),
 
     SharedModule.forRoot(),
     AppModule,

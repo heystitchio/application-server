@@ -10,3 +10,7 @@ export const client = new ApolloClient({
   networkInterface,
   initialState: window['UNIVERSAL_CACHE'].__APOLLO_STATE__
 });
+
+export const provideClient = function() {
+  return client;
+}
