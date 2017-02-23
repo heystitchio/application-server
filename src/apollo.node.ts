@@ -10,7 +10,3 @@ export const client = new ApolloClient({
   networkInterface,
   ssrMode: true
 });
-
-export function provideClient() {
-  return client;
-}
