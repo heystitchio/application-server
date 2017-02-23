@@ -79,7 +79,7 @@ export class MainModule {
     if (win[UNIVERSAL_KEY] && win[UNIVERSAL_KEY][key]) {
       let serverCache = defaultValue;
       try {
-        serverCache = JSON.parse(win[UNIVERSAL_KEY][key]);
+        serverCache = win[UNIVERSAL_KEY][key];
         if (typeof serverCache !== typeof defaultValue) {
           console.log('Angular Universal: The type of data from the server is different from the default value type');
           serverCache = defaultValue;
