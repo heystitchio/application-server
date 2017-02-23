@@ -60,7 +60,7 @@ export class MainModule {
   ) {}
 
   universalDoDehydrate = (universalCache) => {
-    universalCache['__APOLLO_STATE__'] = {apollo: {data: client.store.getState().apollo.data}};
+    universalCache[CacheService.KEY] = {apollo: {data: client.store.getState().apollo.data}};
   }
 
   universalAfterDehydrate = () => {
