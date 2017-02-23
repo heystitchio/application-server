@@ -21,6 +21,9 @@ import { MainModuleNgFactory } from './node.module.ngfactory';
 // Routes
 import { routes } from './server.routes';
 
+// Apollo
+import { client as apolloClient } from './apollo.node';
+
 enableProdMode();
 
 const app = express();
@@ -81,6 +84,8 @@ function ngApp(req, res) {
     res.sendFile('index.html', {root: './src'});
     return false;
   }
+
+  apolloClient.initStore();
 
   Zone.current.fork({ name: 'CSR fallback', onHandleError }).run(() => {
     res.render('index', {

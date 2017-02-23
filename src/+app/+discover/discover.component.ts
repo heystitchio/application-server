@@ -48,7 +48,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   universalInit(): void {
-    this._api.get('http://swapi.co/api/planets/').subscribe(res => {
+    /*this._api.get('http://swapi.co/api/planets/').subscribe(res => {
       this.slides = res.results;
       if (isBrowser) {
         this.initSlider('main', {
@@ -61,15 +61,7 @@ export class DiscoverComponent implements OnInit {
           paginationClickable: true
         });
       }
-    });
-
-    this._api.get('http://swapi.co/api/species/').subscribe(res => {
-      this.recommended = res.results;
-    });
-
-    this._api.get('http://swapi.co/api/people/').subscribe(res => {
-      this.users = res.results;
-    });
+    });*/
   
   }
 
