@@ -1,22 +1,25 @@
-import { NgModule }       from '@angular/core';
-import { FormsModule }    from '@angular/forms';
-import { RouterModule }   from '@angular/router';
+import { NgModule }        from '@angular/core';
+import { FormsModule }     from '@angular/forms';
+import { RouterModule }    from '@angular/router';
 import { UniversalModule,
          isBrowser,
-         isNode }         from 'angular2-universal/node';
-import { ApolloClient }   from 'apollo-client';
-import { ApolloModule }   from 'apollo-angular';
+         isNode }          from 'angular2-universal/node';
+import { ApolloClient }    from 'apollo-client';
+import { ApolloModule }    from 'apollo-angular';
 import { client,
-         provideClient }  from './apollo.node';
+         provideClient }   from './apollo.node';
 
 import { AppModule,
-         AppComponent }   from './+app/app.module';
-import { SharedModule }   from './+app/shared/shared.module';
-import { CacheService }   from './+app/shared/cache/cache.service';
-import { MetaService }    from './+app/shared/meta/meta.service';
+         AppComponent }    from './+app/app.module';
+import { SharedModule }    from './+app/shared/shared.module';
+import { CacheService }    from './+app/shared/cache/cache.service';
+import { MetaService }     from './+app/shared/meta/meta.service';
+import { NodeAuthService } from './+app/shared/services/auth/node.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
 
+declare var isLoggedIn: any;
+declare var authenticationId: any;
 
 export function getLRU() {
   return new Map();
@@ -49,6 +52,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
+    { provide: 'AuthService', useFactory: () => new NodeAuthService(Zone.current.get('req').authenticationId, isLoggedIn) },
 
     CacheService,
     MetaService,
@@ -66,7 +70,6 @@ export class MainModule {
   }
 
   universalAfterDehydrate = () => {
-    // comment out if LRU provided at platform level to be shared between each user
     this.cache.clear();
   }
 

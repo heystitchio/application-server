@@ -9,8 +9,6 @@ import { SharedComponentsModule } from './components/components.module';
 import { ApiService }             from './cache/api.service';
 import { HashService }            from './cache/hash.service';
 
-import { AuthService }            from './services/auth.service';
-
 
 const MODULES = [
   CommonModule,
@@ -30,8 +28,7 @@ const COMPONENTS = [
 
 const PROVIDERS = [
   ApiService,
-  HashService,
-  AuthService
+  HashService
 ]
 
 @NgModule({

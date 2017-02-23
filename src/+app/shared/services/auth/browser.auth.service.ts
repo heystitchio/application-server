@@ -1,41 +1,22 @@
-import { Injectable,
-         Inject }          from '@angular/core';
-import { Router,
-         ActivatedRoute }  from '@angular/router';
+import { Injectable }      from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
-import { isNode }          from 'angular2-universal';
+
+import { AuthService } from './auth.service';
 
 declare var auth0: any;
 
 
 @Injectable()
-export class AuthService {
+export class BrowserAuthService implements AuthService {
 
-  auth = new auth0.WebAuth({
+  private auth = new auth0.WebAuth({
     domain: 'heystitchio.auth0.com',
     clientID: 'Uxh1y3P6CnpfzyOk7nHNR67ukfXSgOpC',
     callbackURL: 'http://localhost:3000/',
     responseType: 'token id_token'
   });
 
-  constructor(
-    @Inject('req') req: any,
-    private _router: Router,
-    private _route: ActivatedRoute
-  ) {}
-
-  public handleAuthentication(): void {
-    this.auth.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        localStorage.setItem('access_token', authResult.accessToken);
-        localStorage.setItem('id_token', authResult.idToken);
-        this._router.navigate(['/']);
-      } else if (authResult && authResult.error) {
-        alert('Error: ' + authResult.error);
-      }
-    });
-  }
+  constructor() {}
 
   public login(username: string, password: string): void {
     this.auth.client.login({
@@ -49,9 +30,19 @@ export class AuthService {
       }
       if (authResult && authResult.idToken && authResult.accessToken) {
         this.setUser(authResult);
-        this._router.navigate(['/']);
       }
     });
+  }
+
+  public loginWithGoogle(): void {
+    this.auth.authorize({
+      connection: 'google-oauth2',
+    });
+  }
+
+  public logout(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
   }
 
   public signup(email, password): void {
@@ -66,19 +57,8 @@ export class AuthService {
     });
   }
 
-  public loginWithGoogle(): void {
-    this.auth.authorize({
-      connection: 'google-oauth2',
-    });
-  }
-
   public isAuthenticated(): boolean {
     return tokenNotExpired();
-  }
-
-  public logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
   }
 
   private setUser(authResult): void {
