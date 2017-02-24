@@ -12,7 +12,7 @@ export class BrowserAuthService implements AuthService {
 
   private auth = new auth0.WebAuth({
     domain: 'heystitchio.auth0.com',
-    clientID: 'Uxh1y3P6CnpfzyOk7nHNR67ukfXSgOpC',
+    clientID: 'mSKfZ1UMwag0Vibr2DzbURdX6wgf5z72',
     callbackURL: 'http://localhost:3000/',
     responseType: 'token id_token'
   });
