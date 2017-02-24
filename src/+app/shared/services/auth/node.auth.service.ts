@@ -6,8 +6,7 @@ import { AuthService } from './auth.service';
 export class NodeAuthService implements AuthService {
 
   constructor(
-    private _authId,
-    private _isLoggedIn: boolean
+    private _authId: String
   ) {}
 
   public login(): void {
@@ -27,7 +26,11 @@ export class NodeAuthService implements AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return this._isLoggedIn;
+    if (this._authId) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

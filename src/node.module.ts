@@ -34,12 +34,8 @@ export function getResponse(): any {
   return Zone.current.get('res') || {};
 }
 
-export function isLoggedIn(): boolean {
-  return getResponse().authenticationId;
-}
-
 export function getAuthService() {
-  return new NodeAuthService(getRequest().authenticationId, isLoggedIn());
+  return new NodeAuthService(getRequest().authenticationId);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
