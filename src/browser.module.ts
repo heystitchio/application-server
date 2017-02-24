@@ -1,5 +1,6 @@
 import { NgModule,
          OpaqueToken }        from '@angular/core';
+import { Router }             from '@angular/router';
 import { FormsModule }        from '@angular/forms';
 import { RouterModule }       from '@angular/router';
 import { UniversalModule,
@@ -40,8 +41,8 @@ export function getResponse() {
   return {};
 }
 
-export function getAuthService(CookieService) {
-  return new BrowserAuthService(CookieService);
+export function getAuthService(CookieService, Router) {
+  return new BrowserAuthService(CookieService, Router);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -65,7 +66,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService] },
+    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService, Router] },
 
     CacheService,
     MetaService,

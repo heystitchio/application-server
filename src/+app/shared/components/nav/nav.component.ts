@@ -1,4 +1,10 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component,
+         ChangeDetectionStrategy,
+         Inject,
+         ViewEncapsulation }      from '@angular/core';
+
+import { AUTH_SERVICE,
+         AuthService }            from '../../services/auth/auth.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
@@ -7,4 +13,8 @@ import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class MainNavComponent { }
+export class MainNavComponent {
+  constructor(
+    @Inject(AUTH_SERVICE) public _auth: AuthService
+  ){}
+}

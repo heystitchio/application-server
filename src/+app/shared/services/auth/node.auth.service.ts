@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 export class NodeAuthService implements AuthService {
 
   constructor(
-    private _req: any
+    @Inject('req') private _req: any
   ) {}
 
   public login(): void {
@@ -27,7 +27,7 @@ export class NodeAuthService implements AuthService {
   }
 
   public isAuthenticated(): boolean {
-    if (this._req.authenticationId) {
+    if (this._req.cookies['access_token']) {
       return true;
     } else {
       return false;

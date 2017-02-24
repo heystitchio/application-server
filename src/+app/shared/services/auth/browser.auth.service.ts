@@ -1,8 +1,8 @@
 import { Injectable }      from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
+import { Router }          from '@angular/router';
 import { CookieService }   from 'angular2-cookie/services/cookies.service';
 
-import { AuthService } from './auth.service';
+import { AuthService }     from './auth.service';
 
 declare var auth0: any;
 
@@ -10,7 +10,7 @@ declare var auth0: any;
 @Injectable()
 export class BrowserAuthService implements AuthService {
 
-  private auth = new auth0.WebAuth({
+  private _auth = new auth0.WebAuth({
     domain: 'heystitchio.auth0.com',
     clientID: 'mSKfZ1UMwag0Vibr2DzbURdX6wgf5z72',
     callbackURL: 'http://localhost:3000/',
@@ -18,11 +18,12 @@ export class BrowserAuthService implements AuthService {
   });
 
   constructor(
-    private _cookies: CookieService
+    private _cookies: CookieService,
+    private _router: Router
   ) {}
 
   public login(username: string, password: string): void {
-    this.auth.client.login({
+    this._auth.client.login({
       realm: 'Username-Password-Authentication',
       username,
       password
@@ -32,24 +33,25 @@ export class BrowserAuthService implements AuthService {
         return;
       }
       if (authResult && authResult.idToken && authResult.accessToken) {
-        this.setUser(authResult);
+        this.setUserCookies(authResult.accessToken, authResult.idToken);
       }
     });
   }
 
   public loginWithGoogle(): void {
-    this.auth.authorize({
+    this._auth.authorize({
       connection: 'google-oauth2',
     });
   }
 
   public logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
+    this._cookies.remove('access_token');
+    this._cookies.remove('id_token');
+    this._router.navigate(['/login']);
   }
 
   public signup(email, password): void {
-    this.auth.redirect.signupAndLogin({
+    this._auth.redirect.signupAndLogin({
       connection: 'Username-Password-Authentication',
       email,
       password,
@@ -61,11 +63,31 @@ export class BrowserAuthService implements AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return tokenNotExpired();
+    if (this._cookies.get('access_token')) {
+      return true;
+    }
+    return false;
   }
 
-  private setUser(authResult): void {
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
+  public handleAuth(): void {
+    this._auth.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = '';
+        this.setUserCookies(authResult.accessToken, authResult.idToken);
+      } else if (authResult && authResult.error) {
+        alert('Error: ' + authResult.error);
+      }
+    });
+  }
+
+  private setUserCookies(accessToken, idToken): void {
+    var date = new Date(),
+        options = {}
+
+    date.setTime(date.getTime()+(14*24*60*60*1000));
+    options['expires'] = date;
+
+    this._cookies.put('access_token', accessToken, options);
+    this._cookies.put('id_token', idToken, options);
   }
 }

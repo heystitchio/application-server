@@ -3,6 +3,7 @@ import { Component,
          Inject,
          ViewEncapsulation }      from '@angular/core';
 import { Router }                 from '@angular/router';
+import { isBrowser }              from 'angular2-universal';
 
 import { AUTH_SERVICE,
          AuthService }            from './shared/services/auth/auth.service';
@@ -20,6 +21,8 @@ export class AppComponent {
     @Inject(AUTH_SERVICE) _auth: AuthService,
     public _router: Router
   ){
-    //_auth.handleAuth();
+    if (isBrowser) {
+      _auth.handleAuth();
+    }
   }
 }
