@@ -24,8 +24,4 @@ export class LoginComponent {
   loginWithGoogle() {
     this._auth.loginWithGoogle();
   }
-
-  signup(username, password) {
-    this._auth.signup(username, password);
-  }
 }
