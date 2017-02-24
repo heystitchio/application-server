@@ -1,4 +1,5 @@
-import { NgModule }           from '@angular/core';
+import { NgModule,
+         OpaqueToken }        from '@angular/core';
 import { FormsModule }        from '@angular/forms';
 import { RouterModule }       from '@angular/router';
 import { UniversalModule,
@@ -11,12 +12,14 @@ import { ApolloClient }       from 'apollo-client';
 import { ApolloModule }       from 'apollo-angular';
 import { client,
          provideClient }      from './apollo.browser';
+import { CookieService }      from 'angular2-cookie/services/cookies.service';
 
 import { AppModule,
          AppComponent }       from './+app/app.module';
 import { SharedModule }       from './+app/shared/shared.module';
 import { CacheService }       from './+app/shared/cache/cache.service';
 import { MetaService }        from './+app/shared/meta/meta.service';
+import { AUTH_SERVICE }       from './+app/shared/services/auth/auth.service';
 import { BrowserAuthService } from './+app/shared/services/auth/browser.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
@@ -37,7 +40,12 @@ export function getResponse() {
   return {};
 }
 
+export function getAuthService(CookieService) {
+  return new BrowserAuthService(CookieService);
+}
+
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
+
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -57,10 +65,11 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: 'AuthService', useFactory: () => new BrowserAuthService(Zone.current.get('req').authenticationId, isLoggedIn) },
+    { provide: AUTH_SERVICE, useFactory: getAuthService,deps: [CookieService] },
 
     CacheService,
     MetaService,
+    CookieService
   ]
 })
 

@@ -1,4 +1,5 @@
-import { NgModule }        from '@angular/core';
+import { NgModule,
+         OpaqueToken }     from '@angular/core';
 import { FormsModule }     from '@angular/forms';
 import { RouterModule }    from '@angular/router';
 import { UniversalModule,
@@ -14,26 +15,35 @@ import { AppModule,
 import { SharedModule }    from './+app/shared/shared.module';
 import { CacheService }    from './+app/shared/cache/cache.service';
 import { MetaService }     from './+app/shared/meta/meta.service';
+import { AUTH_SERVICE }    from './+app/shared/services/auth/auth.service';
 import { NodeAuthService } from './+app/shared/services/auth/node.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
 
-declare var isLoggedIn: any;
 declare var authenticationId: any;
 
-export function getLRU() {
+export function getLRU(): any {
   return new Map();
 }
 
-export function getRequest() {
+export function getRequest(): any {
   return Zone.current.get('req') || {};
 }
 
-export function getResponse() {
+export function getResponse(): any {
   return Zone.current.get('res') || {};
 }
 
+export function isLoggedIn(): boolean {
+  return getResponse().authenticationId;
+}
+
+export function getAuthService() {
+  return new NodeAuthService(getRequest().authenticationId, isLoggedIn());
+}
+
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
+
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -52,7 +62,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: 'AuthService', useFactory: () => new NodeAuthService(Zone.current.get('req').authenticationId, isLoggedIn) },
+    { provide: AUTH_SERVICE, useFactory: getAuthService },
 
     CacheService,
     MetaService,

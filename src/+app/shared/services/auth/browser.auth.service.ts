@@ -1,5 +1,6 @@
 import { Injectable }      from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
+import { CookieService }   from 'angular2-cookie/services/cookies.service';
 
 import { AuthService } from './auth.service';
 
@@ -16,7 +17,9 @@ export class BrowserAuthService implements AuthService {
     responseType: 'token id_token'
   });
 
-  constructor() {}
+  constructor(
+    private _cookies: CookieService
+  ) {}
 
   public login(username: string, password: string): void {
     this.auth.client.login({

@@ -1,11 +1,13 @@
+import { Injectable }      from '@angular/core';
+
 import { AuthService } from './auth.service';
 
 
 export class NodeAuthService implements AuthService {
 
   constructor(
-    private authenticationId,
-    private isLoggedIn:boolean
+    private _authId,
+    private _isLoggedIn: boolean
   ) {}
 
   public login(): void {
@@ -25,7 +27,7 @@ export class NodeAuthService implements AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    return this._isLoggedIn;
   }
 
 }

@@ -2,7 +2,9 @@ import { Component,
          Inject,
          ChangeDetectionStrategy,
          ViewEncapsulation }      from '@angular/core';
-import { AuthService }            from '../../shared/services/auth.service';
+import { AUTH_SERVICE,
+         AuthService }            from '../../shared/services/auth/auth.service';
+
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
@@ -12,6 +14,18 @@ import { AuthService }            from '../../shared/services/auth.service';
 })
 export class LoginComponent {
   constructor(
-    public _auth: AuthService
+    @Inject(AUTH_SERVICE) private _auth: AuthService,
   ) {}
+
+  login(username, password) {
+    this._auth.login(username, password);
+  }
+
+  loginWithGoogle() {
+    this._auth.loginWithGoogle();
+  }
+
+  signup(username, password) {
+    this._auth.signup(username, password);
+  }
 }
