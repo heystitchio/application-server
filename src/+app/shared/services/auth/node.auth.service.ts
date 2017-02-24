@@ -1,4 +1,5 @@
-import { Injectable }      from '@angular/core';
+import { Inject,
+         Injectable }  from '@angular/core';
 
 import { AuthService } from './auth.service';
 
@@ -6,7 +7,7 @@ import { AuthService } from './auth.service';
 export class NodeAuthService implements AuthService {
 
   constructor(
-    private _authId: String
+    private _req: any
   ) {}
 
   public login(): void {
@@ -26,7 +27,7 @@ export class NodeAuthService implements AuthService {
   }
 
   public isAuthenticated(): boolean {
-    if (this._authId) {
+    if (this._req.authenticationId) {
       return true;
     } else {
       return false;

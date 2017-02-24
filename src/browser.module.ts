@@ -65,7 +65,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: getAuthService,deps: [CookieService] },
+    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService] },
 
     CacheService,
     MetaService,

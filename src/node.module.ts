@@ -34,8 +34,8 @@ export function getResponse(): any {
   return Zone.current.get('res') || {};
 }
 
-export function getAuthService() {
-  return new NodeAuthService(getRequest().authenticationId);
+export function getAuthService(req) {
+  return new NodeAuthService(req);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -58,7 +58,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: getAuthService },
+    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: ['req'] },
 
     CacheService,
     MetaService,
