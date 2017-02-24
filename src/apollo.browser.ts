@@ -8,7 +8,7 @@ const networkInterface = createNetworkInterface({
 
 export const client = new ApolloClient({
   networkInterface,
-  //initialState: window['UNIVERSAL_CACHE'].__APOLLO_STATE__
+  initialState: window['UNIVERSAL_CACHE'].__APOLLO_STATE__
 });
 
 export function provideClient() {
