@@ -10,7 +10,8 @@ import { AUTH_SERVICE,
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.Emulated,
   selector: 'signup',
-  templateUrl: './signup.component.html'
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
   constructor(
