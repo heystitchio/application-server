@@ -15,6 +15,9 @@ const accepts = require('accepts');
 const { compressSync } = require('iltorb');
 const interceptor = require('express-interceptor');
 
+// Plugins
+import * as Raven from 'raven-js';
+
 // Angular
 import { enableProdMode }      from '@angular/core';
 import { createEngine }        from 'angular2-express-engine';

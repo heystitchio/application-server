@@ -72,6 +72,7 @@
     "methods": "~1.1.2",
     "morgan": "^1.7.0",
     "preboot": "~4.5.2",
+    "raven-js": "^3.11.0",
     "rxjs": "5.0.0-beta.12",
     "swiper": "^3.4.1",
     "webfontloader": "^1.6.26",

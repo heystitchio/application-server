@@ -1,8 +1,8 @@
-import { Injectable }      from '@angular/core';
-import { Router }          from '@angular/router';
-import { CookieService }   from 'angular2-cookie/services/cookies.service';
+import { Injectable }    from '@angular/core';
+import { Router }        from '@angular/router';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
-import { AuthService }     from './auth.service';
+import { AuthService }   from './auth.service';
 
 declare var auth0: any;
 
@@ -80,6 +80,14 @@ export class BrowserAuthService implements AuthService {
     });
   }
 
+  /*private setUserContext(user): void {
+    this._error.setUserContext(user);
+  }
+
+  private removeUserContext(): void {
+    this._error.removeUserContext();
+  }*/
+
   private setUserCookies(accessToken, idToken): void {
     var date = new Date(),
         options = {}
@@ -90,4 +98,5 @@ export class BrowserAuthService implements AuthService {
     this._cookies.put('access_token', accessToken, options);
     this._cookies.put('id_token', idToken, options);
   }
+  
 }

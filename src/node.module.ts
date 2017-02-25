@@ -1,4 +1,5 @@
-import { NgModule,
+import { ErrorHandler,
+         NgModule,
          OpaqueToken }     from '@angular/core';
 import { ReactiveFormsModule }     from '@angular/forms';
 import { RouterModule }    from '@angular/router';
@@ -9,6 +10,7 @@ import { ApolloClient }    from 'apollo-client';
 import { ApolloModule }    from 'apollo-angular';
 import { client,
          provideClient }   from './apollo.node';
+import * as Raven          from 'raven-js';
 
 import { AppModule,
          AppComponent }    from './+app/app.module';
@@ -40,6 +42,17 @@ export function getAuthService(req) {
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
 
+//Raven Error Reporting
+Raven
+  .config('https://e090d88b54a342fba41842bf5a5f9d83@sentry.io/142633')
+  .install();
+
+export class RavenErrorHandler implements ErrorHandler {
+  handleError(err:any) : void {
+    Raven.captureException(err.originalError || err);
+  }
+}
+
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -58,6 +71,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
+    { provide: ErrorHandler, useClass: RavenErrorHandler },
     { provide: AUTH_SERVICE, useFactory: getAuthService, deps: ['req'] },
 
     CacheService,

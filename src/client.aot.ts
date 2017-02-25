@@ -8,6 +8,7 @@ import './+app/shared/lib/rxjs-operators';
 
 // Plugins
 import * as $ from 'jquery';
+import * as Raven from 'raven-js';
 import 'swiper';
 
 // Angular 2
