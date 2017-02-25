@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MainNavComponent } from './nav/nav.component';
 import { MainFooterComponent } from './footer/footer.component';
@@ -9,7 +9,6 @@ import { MainFooterComponent } from './footer/footer.component';
 const MODULES = [
   CommonModule,
   RouterModule,
-  FormsModule,
   ReactiveFormsModule
 ];
 

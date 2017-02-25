@@ -1,7 +1,7 @@
 import { NgModule,
          OpaqueToken }        from '@angular/core';
 import { Router }             from '@angular/router';
-import { FormsModule }        from '@angular/forms';
+import { ReactiveFormsModule }        from '@angular/forms';
 import { RouterModule }       from '@angular/router';
 import { UniversalModule,
          isBrowser,
@@ -52,7 +52,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
   bootstrap: [ AppComponent ],
   imports: [
     UniversalModule,
-    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
     ApolloModule.withClient(provideClient),
 
