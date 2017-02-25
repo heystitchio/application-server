@@ -22,10 +22,10 @@ export class BrowserAuthService implements AuthService {
     private _router: Router
   ) {}
 
-  public login(username: string, password: string): void {
+  public login(email: String, password: String): void {
     this._auth.client.login({
       realm: 'Username-Password-Authentication',
-      username,
+      email,
       password
     }, (err, authResult) => {
       if (err) {
@@ -50,7 +50,7 @@ export class BrowserAuthService implements AuthService {
     this._router.navigate(['/login']);
   }
 
-  public signup(email, password): void {
+  public signup(email: String, password: String): void {
     this._auth.redirect.signupAndLogin({
       connection: 'Username-Password-Authentication',
       email,
@@ -62,7 +62,7 @@ export class BrowserAuthService implements AuthService {
     });
   }
 
-  public isAuthenticated(): boolean {
+  public isAuthenticated(): Boolean {
     if (this._cookies.get('access_token')) {
       return true;
     }

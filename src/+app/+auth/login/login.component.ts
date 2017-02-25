@@ -53,8 +53,11 @@ export class LoginComponent implements OnInit {
     this._meta.addTags(this.meta);
   }
 
-  login(form: FormGroup): void {
-    this._auth.login(form.get('email'), form.get('password'));
+  login(): void {
+    var email: String = this.loginForm.controls['email'].value,
+        password: String = this.loginForm.controls['password'].value;
+
+    this._auth.login(email, password);
   }
 
   loginWithGoogle(): void {

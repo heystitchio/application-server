@@ -56,8 +56,11 @@ export class SignupComponent implements OnInit{
     this._meta.addTags(this.meta);
   }
 
-  signup(form: FormGroup): void {
-    this._auth.signup(form.get('email'), form.get('password'));
+  signup(): void {
+    var email: String = this.signupForm.controls['email'].value,
+        password: String = this.signupForm.controls['password'].value;
+
+    this._auth.signup(email, password);
   }
 
   loginWithGoogle(): void {
