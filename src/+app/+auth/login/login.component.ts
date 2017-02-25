@@ -2,7 +2,11 @@ import { Component,
          ChangeDetectionStrategy,
          Inject,
          OnInit,
-         ViewEncapsulation }      from '@angular/core';
+         ViewEncapsulation }      from '@angular/core';      
+import { FormGroup, 
+         FormControl,
+         Validators,
+         FormBuilder }            from '@angular/forms'
 
 import { MetaService,
          MetaDefinition }         from '../../shared/meta/meta.service';
@@ -17,12 +21,14 @@ import { AUTH_SERVICE,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   meta: MetaDefinition[] = [];
+  loginForm: FormGroup;
 
   constructor(
     @Inject(AUTH_SERVICE) private _auth: AuthService,
-    private _meta: MetaService
+    private _meta: MetaService,
+    private _fb: FormBuilder
   ) {
     this.meta = [
       { name: 'description', content: 'Set by meta setter service', id: 'desc' },
@@ -35,18 +41,23 @@ export class LoginComponent implements OnInit{
       { property: 'fb:app_id', content: 'Set by meta setter service' },
       { property: 'og:title', content: 'Set by meta setter service' }
     ];
+
+    this.loginForm = _fb.group({
+      "email": ["", Validators.required],
+      "password": ["", Validators.required]
+    });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._meta.setTitle('Log In');
     this._meta.addTags(this.meta);
   }
 
-  login(username, password) {
-    this._auth.login(username, password);
+  login(form: FormGroup): void {
+    this._auth.login(form.get('email'), form.get('password'));
   }
 
-  loginWithGoogle() {
+  loginWithGoogle(): void {
     this._auth.loginWithGoogle();
   }
 }
