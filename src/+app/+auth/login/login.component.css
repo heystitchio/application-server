@@ -6,7 +6,7 @@ input {border:0px solid transparent;background: transparent;}
 
 .login-contain {overflow: hidden;}
 
-.logo {display: block;width: 100%;height: 75px; background:transparent url('https://cdn.heystitch.io/web/common/images/logos/logotype-web.png') no-repeat center center;background-size: contain;}
+.logo {display: block;margin-bottom: 30px;width: 100%;height: 60px; background:transparent url('https://cdn.heystitch.io/web/common/images/logos/logotype-web.png') no-repeat center center;background-size: contain;}
 
 .form-contain {position: absolute;top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);  min-width:300px; max-width: 600px;}
 
