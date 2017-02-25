@@ -22,10 +22,10 @@ export class BrowserAuthService implements AuthService {
     private _router: Router
   ) {}
 
-  public login(email: String, password: String): void {
+  public login(username: String, password: String): void {
     this._auth.client.login({
       realm: 'Username-Password-Authentication',
-      email,
+      username,
       password
     }, (err, authResult) => {
       if (err) {
