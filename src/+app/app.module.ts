@@ -5,7 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { applicationReducer } from './shared/models/application/application.reducer';
 
 import { AboutModule } from './+about/about.module';
-import { AuthModule } from './+auth/auth.module';
+import { AuthModule } from './+auth/modules/auth.module';
 import { ContactModule } from './+contact/contact.module';
 import { CreateModule } from './+create/create.module';
 import { DiscoverModule } from './+discover/discover.module';

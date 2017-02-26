@@ -1,5 +1,5 @@
-<section class="container-fluid login-contain">
-  <h1 class="sr-only">Log In</h1>
+<section class="container-fluid signup-contain">
+  <h1 class="sr-only">Sign Up</h1>
   <div class="row">
     <article class="col-sm-12 col-md-6 col-lg-5">
       <section class="form-contain">
@@ -11,7 +11,15 @@
         <button type="button" class="btn btn-default btn-primary btn-block" (click)="loginWithGoogle()">
           Log In with Google
         </button>
-        <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <form [formGroup]="signupForm" (ngSubmit)="signup()">
+          <div class="form-group">
+            <label for="username" class="sr-only">Username</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="icon-user"></i></div>
+              <input type="text" class="form-control" name="username" formControlName="username" placeholder="AwesomeUser99" required>
+              <!--<span class="help-block text-danger" *ngIf="formErrors.username">{{ formErrors.username }}</span>-->
+            </div>
+          </div>
           <div class="form-group">
             <label for="email" class="sr-only">Email Address</label>
             <div class="input-group">
@@ -28,9 +36,9 @@
               <!--<span class="help-block text-danger" *ngIf="formErrors.password">{{ formErrors.password }}</span>-->
             </div>
           </div>
-          <button type="submit" class="btn btn-default btn-block" [disabled]="!loginForm.valid">Log in</button>
+          <button type="submit" class="btn btn-default btn-block" [disabled]="!signupForm.valid">Sign up</button>
         </form>
-        <a class="nav-text" routerLink="/signup">Don't have an account? Sign up here.</a>
+        <a class="nav-text" routerLink="/login">Already have an account? Sign in here.</a>
       </section>
     </article>
     <aside class="hidden-sm col-md-6 col-lg-7">

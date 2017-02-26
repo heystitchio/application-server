@@ -20,10 +20,11 @@ import * as Raven             from 'raven-js';
 import { AppModule,
          AppComponent }       from './+app/app.module';
 import { SharedModule }       from './+app/shared/shared.module';
-import { CacheService }       from './+app/shared/cache/cache.service';
+import { CacheService }       from './+app/shared/services/cache/cache.service';
+import { ApiService }         from './+app/shared/services/api/api.service';
 import { MetaService }        from './+app/shared/meta/meta.service';
-import { AUTH_SERVICE }       from './+app/shared/services/auth/auth.service';
-import { BrowserAuthService } from './+app/shared/services/auth/browser.auth.service';
+import { AUTH_SERVICE }       from './+app/+auth/services/auth.service';
+import { BrowserAuthService } from './+app/+auth/services/browser.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
 
@@ -43,8 +44,8 @@ export function getResponse() {
   return {};
 }
 
-export function getAuthService(CookieService, Router) {
-  return new BrowserAuthService(CookieService, Router);
+export function getAuthService(CookieService, Router, ApiService) {
+  return new BrowserAuthService(CookieService, Router, ApiService);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -79,7 +80,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService, Router] },
+    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService, Router, ApiService] },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
 
     CacheService,

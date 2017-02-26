@@ -4,9 +4,9 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 
-import { CacheService  } from '../../cache/cache.service';
-import { HashService  } from '../../cache/hash.service';
-import { ApiService  } from '../../cache/api.service';
+import { CacheService  } from '../../services/cache/cache.service';
+import { HashService  } from '../../services/cache/hash.service';
+import { ApiService  } from '../../services/api/api.service';
 
 import { File } from './file';
 

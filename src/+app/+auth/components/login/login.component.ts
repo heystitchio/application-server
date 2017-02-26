@@ -2,28 +2,29 @@ import { Component,
          ChangeDetectionStrategy,
          Inject,
          OnInit,
-         ViewEncapsulation }      from '@angular/core';
+         ViewEncapsulation }      from '@angular/core';      
 import { FormGroup, 
          FormControl,
          Validators,
          FormBuilder }            from '@angular/forms'
 
 import { MetaService,
-         MetaDefinition }         from '../../shared/meta/meta.service';
+         MetaDefinition }         from '../../../shared/meta/meta.service';
 import { AUTH_SERVICE,
-         AuthService }            from '../../shared/services/auth/auth.service';
+         AuthService }            from '../../services';
 
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.Emulated,
-  selector: 'signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  selector: 'login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class SignupComponent implements OnInit{
+export class LoginComponent implements OnInit {
+  user: any;
   meta: MetaDefinition[] = [];
-  signupForm: FormGroup;
+  loginForm: FormGroup;
 
   constructor(
     @Inject(AUTH_SERVICE) private _auth: AuthService,
@@ -42,25 +43,24 @@ export class SignupComponent implements OnInit{
       { property: 'og:title', content: 'Set by meta setter service' }
     ];
 
-    this.signupForm = _fb.group({
+    this.loginForm = _fb.group({
       "email": ["", Validators.required],
-      "password": ["", [
-        Validators.required,
-        Validators.minLength(8)
-      ]]
+      "password": ["", Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this._meta.setTitle('Sign Up');
+    this._meta.setTitle('Log In');
     this._meta.addTags(this.meta);
   }
 
-  signup(): void {
-    var email: String = this.signupForm.controls['email'].value,
-        password: String = this.signupForm.controls['password'].value;
+  login(): void {
+    var email: String = this.loginForm.controls['email'].value,
+        password: String = this.loginForm.controls['password'].value;
 
-    this._auth.signup(email, password);
+    this._auth.login(email, password)
+      .then((user) => this.user = user)
+      .catch((err) => alert(err));
   }
 
   loginWithGoogle(): void {

@@ -6,7 +6,7 @@ import { Router }                 from '@angular/router';
 import { isBrowser }              from 'angular2-universal';
 
 import { AUTH_SERVICE,
-         AuthService }            from './shared/services/auth/auth.service';
+         AuthService }            from './+auth/services/auth.service';
 
 
 @Component({

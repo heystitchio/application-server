@@ -1,7 +1,7 @@
 import { Inject,
          Injectable }  from '@angular/core';
 
-import { AuthService } from './auth.service';
+import { AuthService } from './';
 
 
 export class NodeAuthService implements AuthService {

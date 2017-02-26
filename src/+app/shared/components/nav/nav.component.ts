@@ -4,7 +4,7 @@ import { Component,
          ViewEncapsulation }      from '@angular/core';
 
 import { AUTH_SERVICE,
-         AuthService }            from '../../services/auth/auth.service';
+         AuthService }            from '../../../+auth/services/auth.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,

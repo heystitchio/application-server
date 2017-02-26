@@ -5,11 +5,11 @@ export let AUTH_SERVICE = new OpaqueToken('auth.service');
 
 export interface AuthService {
 
-  login(email?: String, password?: String): void;
+  login(email?: String, password?: String): any;
   loginWithGoogle(): void;
-  logout(): void;
-  signup(email?: String, password?: String): void;
+  logout(): any;
+  signup(username?: String, email?: String, password?: String): any;
   isAuthenticated(): Boolean;
-  handleAuth?(): void;
+  handleAuth?(): any;
 
 }

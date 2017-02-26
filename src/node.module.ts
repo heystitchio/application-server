@@ -10,15 +10,14 @@ import { ApolloClient }    from 'apollo-client';
 import { ApolloModule }    from 'apollo-angular';
 import { client,
          provideClient }   from './apollo.node';
-import * as Raven          from 'raven-js';
 
 import { AppModule,
          AppComponent }    from './+app/app.module';
 import { SharedModule }    from './+app/shared/shared.module';
-import { CacheService }    from './+app/shared/cache/cache.service';
+import { CacheService }    from './+app/shared/services/cache/cache.service';
 import { MetaService }     from './+app/shared/meta/meta.service';
-import { AUTH_SERVICE }    from './+app/shared/services/auth/auth.service';
-import { NodeAuthService } from './+app/shared/services/auth/node.auth.service';
+import { AUTH_SERVICE }    from './+app/+auth/services/auth.service';
+import { NodeAuthService } from './+app/+auth/services/node.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
 
@@ -42,17 +41,6 @@ export function getAuthService(req) {
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
 
-//Raven Error Reporting
-Raven
-  .config('https://e090d88b54a342fba41842bf5a5f9d83@sentry.io/142633')
-  .install();
-
-export class RavenErrorHandler implements ErrorHandler {
-  handleError(err:any) : void {
-    Raven.captureException(err.originalError || err);
-  }
-}
-
 
 @NgModule({
   bootstrap: [ AppComponent ],
@@ -71,7 +59,6 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: ErrorHandler, useClass: RavenErrorHandler },
     { provide: AUTH_SERVICE, useFactory: getAuthService, deps: ['req'] },
 
     CacheService,

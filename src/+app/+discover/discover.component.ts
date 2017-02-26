@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@
 import { isBrowser } from 'angular2-universal';
 
 import { MetaService, MetaDefinition } from '../shared/meta/meta.service';
-import { ApiService } from '../shared/cache/api.service';
+import { ApiService } from '../shared/services/api/api.service';
 import gql from 'graphql-tag';
 
 import { Project } from '../shared/models/project/project';
