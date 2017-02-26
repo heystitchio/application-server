@@ -9,6 +9,7 @@ export interface AuthService {
   loginWithGoogle(): void;
   logout(): any;
   signup(username?: String, email?: String, password?: String): any;
+  updateUser(user?: Object): any;
   isAuthenticated(): Boolean;
   handleAuth?(): any;
 

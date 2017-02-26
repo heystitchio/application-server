@@ -37,8 +37,8 @@ export class BrowserAuthService implements AuthService {
         }
         if (authResult && authResult.accessToken) {
           this.setAccessCookie(authResult.accessToken)
-            .then((accessToken) => this.getUserInfo(accessToken))
-            .then((user) => resolve(user));
+            .then(accessToken => this.getUserInfo(accessToken))
+            .then(user => resolve(user));
         }
       });
     });
@@ -53,7 +53,7 @@ export class BrowserAuthService implements AuthService {
   public logout(): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
-        this._cookies.remove('access_token');
+        this._cookies.remove('AUID');
       }
       catch(err) {
         reject(Error(err));
@@ -78,8 +78,18 @@ export class BrowserAuthService implements AuthService {
     });
   }
 
+  public updateUser(user: Object): Promise<any> {
+    return newPromise((resolve, reject) => {
+      if (user) {
+        resolve(user);
+      } else {
+        reject(Error('An error occured.'));
+      }
+    });
+  }
+
   public isAuthenticated(): Boolean {
-    if (this._cookies.get('access_token')) {
+    if (this._cookies.get('AUID')) {
       return true;
     }
     return false;
@@ -97,7 +107,7 @@ export class BrowserAuthService implements AuthService {
             reject(Error(err));
           }
           this.getUserInfo(authResult.accessToken)
-            .then((user) => resolve(user));
+            .then(user => resolve(user));
         } else if (authResult && authResult.error) {
           reject(Error(authResult.error));
         }
@@ -122,7 +132,7 @@ export class BrowserAuthService implements AuthService {
       options['expires'] = date;
 
       try {
-        this._cookies.put('access_token', accessToken, options);
+        this._cookies.put('AUID', accessToken, options);
       }
       catch (err) {
         reject(Error(err));
@@ -138,7 +148,7 @@ export class BrowserAuthService implements AuthService {
           reject(Error(err));
         }
         if (user) {
-          resolve(() => user);
+          resolve(user);
         }
       });
     });

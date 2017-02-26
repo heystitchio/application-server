@@ -26,8 +26,12 @@ export class NodeAuthService implements AuthService {
     throw new Error("Signup event cannot be called while doing server side rendering");
   }
 
+  public updateUser(): void {
+    throw new Error("Update User event cannot be called while doing server side rendering");
+  }
+
   public isAuthenticated(): boolean {
-    if (this._req.cookies['access_token']) {
+    if (this._req.cookies['AUID']) {
       return true;
     } else {
       return false;

@@ -19,12 +19,13 @@ import { AUTH_SERVICE,
   encapsulation: ViewEncapsulation.Emulated,
   selector: 'signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['../auth.component.css']
 })
 export class SignupComponent implements OnInit {
-  user: any;
+  user: Object;
   meta: MetaDefinition[] = [];
   signupForm: FormGroup;
+  signupError: String;
 
   constructor(
     @Inject(AUTH_SERVICE) private _auth: AuthService,
@@ -64,8 +65,8 @@ export class SignupComponent implements OnInit {
         password: String = this.signupForm.controls['password'].value;
 
     this._auth.signup(username, email, password)
-      .then((user) => this.user = user)
-      .catch((err) => alert(err));
+      .then(user => this.user = user)
+      .catch(err => this.signupError = err.message);
   }
 
   loginWithGoogle(): void {

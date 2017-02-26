@@ -2,14 +2,17 @@ article {position: relative;height: 100vh;box-shadow: 3px 0 6px rgba(0,0,0,0.16)
 
 aside {height: 100vh;background-color: #ccc}
 
-input {border:0px solid transparent;background: transparent;}
+input {background: transparent;border-color: transparent;border-radius: 4px!important;}
 
-.login-contain {overflow: hidden;}
+.auth-contain {overflow: hidden;}
 
 .logo {display: block;margin-bottom: 30px;width: 100%;height: 60px; background:transparent url('https://cdn.heystitch.io/web/common/images/logos/logotype-web.png') no-repeat center center;background-size: contain;}
-
 .form-contain {position: absolute;top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);  min-width:300px; max-width: 600px;}
 
-.input-group-addon {border: none;background: transparent;}
+.input-group-addon {border-color: transparent;background: transparent;}
 
 .nav-text {float: right;margin-top: 20px;}
+
+.ng-dirty.ng-touched.ng-invalid {border-color: #ee3f4a;}
+
+.error-block p {display: block;}

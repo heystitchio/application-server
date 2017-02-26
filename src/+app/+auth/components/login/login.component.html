@@ -1,5 +1,4 @@
-<section class="container-fluid login-contain">
-  {{ user }}
+<section class="container-fluid auth-contain">
   <h1 class="sr-only">Log In</h1>
   <div class="row">
     <article class="col-sm-12 col-md-6 col-lg-5">
@@ -9,16 +8,12 @@
             <span class="sr-only">Stitch</span>
           </a>
         </div>
-        <button type="button" class="btn btn-default btn-primary btn-block" (click)="loginWithGoogle()">
-          Log In with Google
-        </button>
         <form [formGroup]="loginForm" (ngSubmit)="login()">
           <div class="form-group">
             <label for="email" class="sr-only">Email Address</label>
             <div class="input-group">
               <div class="input-group-addon"><i class="icon-mail"></i></div>
               <input type="email" class="form-control" name="email" formControlName="email" placeholder="awesome@email.com" required>
-              <!--<span class="help-block text-danger" *ngIf="formErrors.email">{{ formErrors.email }}</span>-->
             </div>
           </div>
           <div class="form-group">
@@ -26,10 +21,14 @@
             <div class="input-group">
               <div class="input-group-addon"><i class="icon-lock"></i></div>
               <input type="password" class="form-control" name="password" formControlName="password" placeholder="$up3r$3cr3tp@$$w0rd" required>
-              <!--<span class="help-block text-danger" *ngIf="formErrors.password">{{ formErrors.password }}</span>-->
             </div>
           </div>
-          <button type="submit" class="btn btn-default btn-block" [disabled]="!loginForm.valid">Log in</button>
+          <div class="error-block">
+            <p class="help-block text-danger" *ngIf="loginError">{{ loginError }}</p>
+            <!--<p class="help-block text-danger" *ngIf="formErrors.email">{{ formErrors.email }}</p>-->
+            <!--<p class="help-block text-danger" *ngIf="formErrors.password">{{ formErrors.password }}</p>-->
+          </div>
+          <button type="submit" class="btn btn-default btn-block">Log in</button>
         </form>
         <a class="nav-text" routerLink="/signup">Don't have an account? Sign up here.</a>
       </section>
