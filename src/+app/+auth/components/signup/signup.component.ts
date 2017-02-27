@@ -64,7 +64,7 @@ export class SignupComponent implements OnInit {
         email: String = this.signupForm.controls['email'].value,
         password: String = this.signupForm.controls['password'].value;
 
-    this._auth.signup(username, email, password)
+    this._auth.signupAndLogin(email, password)
       .then(user => this.user = user)
       .catch(err => this.signupError = err.message);
   }

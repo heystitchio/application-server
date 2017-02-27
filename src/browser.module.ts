@@ -44,8 +44,8 @@ export function getResponse() {
   return {};
 }
 
-export function getAuthService(CookieService, Router, ApiService) {
-  return new BrowserAuthService(CookieService, Router, ApiService);
+export function getAuthService(CookieService, ApiService) {
+  return new BrowserAuthService(CookieService, ApiService);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -80,7 +80,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService, Router, ApiService] },
+    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService, ApiService] },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
 
     CacheService,

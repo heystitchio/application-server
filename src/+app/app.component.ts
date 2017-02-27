@@ -22,7 +22,7 @@ export class AppComponent {
     public _router: Router
   ){
     if (isBrowser) {
-      _auth.handleAuth();
+      _auth.initAuth();
     }
   }
 }

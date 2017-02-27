@@ -8,9 +8,8 @@ export interface AuthService {
   login(email?: String, password?: String): any;
   loginWithGoogle(): void;
   logout(): any;
-  signup(username?: String, email?: String, password?: String): any;
-  updateUser(user?: Object): any;
+  signupAndLogin(username?: String, password?: String): any;
   isAuthenticated(): Boolean;
-  handleAuth?(): any;
+  initAuth?(): any;
 
 }

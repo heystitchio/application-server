@@ -1,14 +1,24 @@
 export class AuthActions {
 
-  // Authorisation Actions
   static AUTH_LOGIN_USER = '[Auth] Login Auth User';
-  static AUTH_LOGIN_USER_SUCCESS = '[Auth] Login Auth User Success';
+  static AUTH_LOGIN_USER_IN_PROGRESS = '[Auth] Login Auth User In Progress';
   static AUTH_LOGIN_USER_FAIL = '[Auth] Login Auth User Fail';
 
   static AUTH_SIGNUP_USER = '[Auth] Signup Auth User';
-  static AUTH_SIGNUP_USER_SUCCESS = '[Auth] Signup Auth User Success';
+  static AUTH_SIGNUP_USER_IN_PROGRESS = '[Auth] Signup Auth User In Progress';
   static AUTH_SIGNUP_USER_FAIL = '[Auth] Signup Auth User Fail';
 
+  static AUTH_LOGOUT_USER = '[Auth] Logout Auth User';
+  static AUTH_LOGOUT_USER_IN_PROGRESS = '[Auth] Logout Auth User In Progress';
+  static AUTH_LOGOUT_USER_SUCCESS = '[Auth] Logout Auth User Success';
+
+  static AUTH_USER_AUTHENTICATED = '[Auth] Auth User Authenticated';
+
+  static AUTH_TOKEN_EXPIRED = '[Auth] Token Expired';
+
+  static INIT = '[Auth] Init';
+
+  /*
   // User Profile Actions
   static AUTH_UPDATE_PROFILE = '[Auth] Update Auth User Profile';
   static AUTH_UPDATE_PROFILE_SUCCESS = '[Auth] Update Auth User Profile Success';
@@ -202,6 +212,6 @@ export class AuthActions {
 
   static AUTH_DELETE_TEAM = '[Auth] Auth User Delete Team';
   static AUTH_DELETE_TEAM_SUCCESS = '[Auth] Auth User Delete Team Success';
-  static AUTH_DELETE_TEAM_FAIL = '[Auth] Auth User Delete Team Fail';
+  static AUTH_DELETE_TEAM_FAIL = '[Auth] Auth User Delete Team Fail';*/
 
 }

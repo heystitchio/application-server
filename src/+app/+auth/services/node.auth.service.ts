@@ -22,7 +22,7 @@ export class NodeAuthService implements AuthService {
     throw new Error("Logout event cannot be called while doing server side rendering");
   }
 
-  public signup(): void {
+  public signupAndLogin(): void {
     throw new Error("Signup event cannot be called while doing server side rendering");
   }
 

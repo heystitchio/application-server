@@ -45,6 +45,7 @@ export class AuthEffects {
       .catch(error => Observable.of({ type: AuthActions.AUTH_UPDATE_PROFILE_FAIL, payload: error }))
     );
 
+  /*
   // Project Admin Effects
   @Effect() addToProjectAdmins$ = this.actions$
     .ofType(AuthActions.AUTH_ADD_TO_PROJECT_ADMINS)
@@ -405,6 +406,6 @@ export class AuthEffects {
     .switchMap(({ milestone, user }) => this._auth.deleteMilestone(milestone, user)
       .map(user => ({ type: AuthActions.AUTH_DELETE_MILESTONE_SUCCESS, payload: user }))
       .catch(error => Observable.of({ type: AuthActions.AUTH_DELETE_MILESTONE_FAIL, payload: error }))
-    );
+    );*/
   
 }

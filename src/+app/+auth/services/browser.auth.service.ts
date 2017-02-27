@@ -1,12 +1,34 @@
 import { Injectable }    from '@angular/core';
-import { Router }        from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import gql from 'graphql-tag';
 
 import { AuthService }   from './';
-import { ApiService }    from '../../shared/services/api/api.service';
+import { ApiService }    from '../../shared/services/api';
 
 declare var auth0: any;
+
+const createUserMutation = gql`
+  mutation ($idToken: String!, $name: String!, $email: String!, $avatarUrl: String!) {
+    createUser(authProvider: {auth0: {idToken: $idToken}}, name: $name, email: $email) {
+      id
+    }
+  }
+`
+
+const authUserQuery = gql`
+  query ($idToken: String!) {
+    user {
+      id
+      avatarUrl
+      chats
+      email
+      emailConfirm
+      followedProjects
+      name
+      notifications
+    }
+  }
+`
 
 
 @Injectable()
@@ -16,14 +38,33 @@ export class BrowserAuthService implements AuthService {
     domain: 'heystitchio.auth0.com',
     clientID: 'mSKfZ1UMwag0Vibr2DzbURdX6wgf5z72',
     callbackURL: 'http://localhost:3000',
-    responseType: 'token'
+    responseType: 'token id_token'
   });
 
   constructor(
     private _cookies: CookieService,
-    private _router: Router,
     private _api: ApiService
   ) {}
+
+  public signupAndLogin(username: String, password: String): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._auth.redirect.signupAndAuthorize({
+        connection: 'Username-Password-Authentication',
+        username,
+        password,
+      }, (err, authResult) => {
+        if (err) {
+          reject(Error(`browser.auth.service.ts[signupAndLogin()]: ${err.description}`))
+        }
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.setAccessCookie(authResult.accessToken, authResult.idToken)
+            .then(idToken => this.getAuthenticatedUser(idToken as String, 'signupAndLogin'))
+            .then(user => resolve(user))
+            .catch(err => reject(Error(`browser.auth.service.ts[signupAndLogin()]: ${err}`)));
+        }
+      });
+    });
+  }
 
   public login(username: String, password: String): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -33,12 +74,13 @@ export class BrowserAuthService implements AuthService {
         password
       }, (err, authResult) => {
         if (err) {
-          reject(Error(err.description))
+          reject(Error(`browser.auth.service.ts[login()] => ${err.description}`));
         }
-        if (authResult && authResult.accessToken) {
-          this.setAccessCookie(authResult.accessToken)
-            .then(accessToken => this.getUserInfo(accessToken))
-            .then(user => resolve(user));
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.setAccessCookie(authResult.accessToken, authResult.idToken)
+            .then(idToken => this.getAuthenticatedUser(idToken as String, 'login'))
+            .then(user => resolve(user))
+            .catch(err => reject(Error(`browser.auth.service.ts[login()] => ${err}`)));
         }
       });
     });
@@ -54,66 +96,92 @@ export class BrowserAuthService implements AuthService {
     return new Promise((resolve, reject) => {
       try {
         this._cookies.remove('AUID');
+        this._cookies.remove('USID');
       }
       catch(err) {
-        reject(Error(err));
+        reject(Error(`browser.auth.service.ts[logout()] => ${err}`));
       }
-      resolve(true);
+      resolve({});
     });
   }
 
-  public signup(username: String, email: String, password: String): Promise<any> {
+  public isAuthenticated() {
+    return true;
+  }
+
+  public initAuth() {
     return new Promise((resolve, reject) => {
-      this._auth.redirect.signupAndLogin({
-        connection: 'Username-Password-Authentication',
-        email,
-        username,
-        password,
-      }, function(err) {
-        if (err) {
-          reject(Error(err.description));
-        }
-        resolve({username, email, password});
-      });
-    });
-  }
-
-  public updateUser(user: Object): Promise<any> {
-    return newPromise((resolve, reject) => {
-      if (user) {
-        resolve(user);
+      var accessToken: String,
+          idToken: String;
+      try {
+        accessToken = this._cookies.get('AUID');
+        idToken = this._cookies.get('USID');
+      }
+      catch (err) {
+        reject(Error(`browser.auth.service.ts[initAuth()] => ${err}`));
+      }
+      if (accessToken && idToken) {
+        this.getAuthenticatedUser(idToken, 'init')
+          .then(user => resolve(user))
+          .catch(err => reject(Error(`browser.auth.service.ts[initAuth()] => ${err}`)))
       } else {
-        reject(Error('An error occured.'));
+        resolve({
+          id: null,
+          name: null,
+          email: null,
+          emailConfirm: null
+        });
       }
     });
   }
 
-  public isAuthenticated(): Boolean {
-    if (this._cookies.get('AUID')) {
-      return true;
-    }
-    return false;
-  }
-
-  public handleAuth(): Promise<any> {
+  private getAuthenticatedUser(idToken: String, context: String) {
     return new Promise((resolve, reject) => {
-      this._auth.parseHash((err, authResult) => {
-        if (authResult && authResult.accessToken) {
-          try {
-            window.location.hash = '';
-            this.setAccessCookie(authResult.accessToken);
+      var query: any;
+      if (context === 'signupAndLogin') {
+        this._auth.client.userInfo(idToken, function(err, user) {
+          if (err) {
+            reject(`browser.auth.service.ts[getAuthenticatedUser()] => ${err}`);
+          } else {
+            query = {
+              mutation: createUserMutation,
+              variables: {
+                $idToken: idToken,
+                $name: user.name,
+                $email: user.email,
+                $avatarUrl: user.picture
+              }
+            };
+            this._api.mutate(query)
+              .do(user => resolve(user));
+        }});
+      } else if (context === 'login' || context === 'init') {
+        query = {
+          query: authUserQuery,
+          variables: {
+            $id: idToken
           }
-          catch(err) {
-            reject(Error(err));
-          }
-          this.getUserInfo(authResult.accessToken)
-            .then(user => resolve(user));
-        } else if (authResult && authResult.error) {
-          reject(Error(authResult.error));
         }
-      });
+        this._api.query(query)
+          .do(user => resolve(user));
+      } else {
+        reject(Error('browser.auth.service.ts[getAuthenticatedUser()] => Unknown context provided for \"getAuthenticatedUser()\"'));
+      }
     });
   }
+
+  private setAccessCookie(accessToken: string, idToken: string): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      try {
+        this._cookies.put('AUID', accessToken);
+        this._cookies.put('USID', idToken);
+      }
+      catch (err) {
+        reject(Error(`browser.auth.service.ts[setAccessCookie()] => ${err}`));
+      }
+      resolve(idToken);
+    });
+  } 
 
   /*private setUserContext(user): void {
     this._error.setUserContext(user);
@@ -122,36 +190,5 @@ export class BrowserAuthService implements AuthService {
   private removeUserContext(): void {
     this._error.removeUserContext();
   }*/
-
-  private setAccessCookie(accessToken): Promise<any> {
-    return new Promise((resolve, reject) => {
-      var date = new Date(),
-          options = {}
-
-      date.setTime(date.getTime()+(14*24*60*60*1000));
-      options['expires'] = date;
-
-      try {
-        this._cookies.put('AUID', accessToken, options);
-      }
-      catch (err) {
-        reject(Error(err));
-      }
-      resolve(accessToken);
-    });
-  }
-
-  private getUserInfo(accessToken): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this._auth.client.userInfo(accessToken, function(err, user) {
-        if (err) {
-          reject(Error(err));
-        }
-        if (user) {
-          resolve(user);
-        }
-      });
-    });
-  }
   
 }
