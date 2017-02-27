@@ -8,14 +8,10 @@
             <span class="sr-only">Stitch</span>
           </a>
         </div>
+        <div *ngIf="error">
+          <h3>{{ error }}</h3>
+        </div>
         <form [formGroup]="signupForm" (ngSubmit)="signup()">
-          <div class="form-group">
-            <label for="username" class="sr-only">Username</label>
-            <div class="input-group">
-              <div class="input-group-addon"><i class="icon-user"></i></div>
-              <input type="text" class="form-control" name="username" formControlName="username" placeholder="AwesomeUser99" required>
-            </div>
-          </div>
           <div class="form-group">
             <label for="email" class="sr-only">Email Address</label>
             <div class="input-group">
@@ -31,7 +27,6 @@
             </div>
           </div>
           <div class="error-block">
-            <p class="help-block text-danger" *ngIf="signupError">{{ signupError }}</p>
             <!--<p class="help-block text-danger" *ngIf="formErrors.username">{{ formErrors.username }}</p>-->
             <!--<p class="help-block text-danger" *ngIf="formErrors.email">{{ formErrors.email }}</p>-->
             <!--<p class="help-block text-danger" *ngIf="formErrors.password">{{ formErrors.password }}</p>-->

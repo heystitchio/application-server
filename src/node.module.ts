@@ -6,6 +6,7 @@ import { RouterModule }    from '@angular/router';
 import { UniversalModule,
          isBrowser,
          isNode }          from 'angular2-universal/node';
+
 import { ApolloClient }    from 'apollo-client';
 import { ApolloModule }    from 'apollo-angular';
 import { client,
@@ -62,7 +63,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: AUTH_SERVICE, useFactory: getAuthService, deps: ['req'] },
 
     CacheService,
-    MetaService,
+    MetaService
   ]
 })
 

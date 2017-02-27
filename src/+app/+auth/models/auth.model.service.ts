@@ -33,7 +33,7 @@ export class AuthModelService {
     let logins = this.actions$
       .filter(action => action.type === AuthActions.AUTH_LOGIN_USER)
       .do(() => _store.dispatch({type: AuthActions.AUTH_LOGIN_USER_IN_PROGRESS}))
-      .mergeMap(action => _auth.login(action.payload)).share();
+      .mergeMap(action => _auth.login(action.payload.email, action.payload.password)).share();
 
     let loginSuccess$ = logins.filter((payload: Auth) => payload.token !== null)
       .map((payload) => ({type: AuthActions.AUTH_USER_AUTHENTICATED, payload}));
@@ -43,7 +43,7 @@ export class AuthModelService {
     let signups = this.actions$
       .filter(action => action.type === AuthActions.AUTH_SIGNUP_USER)
       .do(() => _store.dispatch({type: AuthActions.AUTH_SIGNUP_USER_IN_PROGRESS}))
-      .mergeMap(action => _auth.signupAndLogin(action.payload)).share();
+      .mergeMap(action => _auth.signupAndLogin(action.payload.email, action.payload.password)).share();
 
     let signupSuccess$ = signups.filter((payload: Auth) => payload.token !== null)
       .map((payload) => ({type: AuthActions.AUTH_USER_AUTHENTICATED, payload}));

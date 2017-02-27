@@ -8,9 +8,12 @@ import { ApiService }    from '../../shared/services/api';
 declare var auth0: any;
 
 const createUserMutation = gql`
-  mutation ($idToken: String!, $name: String!, $email: String!, $avatarUrl: String!) {
-    createUser(authProvider: {auth0: {idToken: $idToken}}, name: $name, email: $email) {
+  mutation createUser($idToken: String!, $username: String!, $email: String!, $avatarUrl: String!) {
+    createUser(authProvider: {auth0: {idToken: $idToken}}, username: $username, email: $email, avatarUrl: $avatarUrl) {
       id
+      username
+      email
+      avatarUrl
     }
   }
 `
@@ -46,21 +49,21 @@ export class BrowserAuthService implements AuthService {
     private _api: ApiService
   ) {}
 
-  public signupAndLogin(username: String, password: String): Promise<any> {
+  public signupAndLogin(email: String, password: String): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._auth.redirect.signupAndAuthorize({
+      this._auth.signupAndAuthorize({
         connection: 'Username-Password-Authentication',
-        username,
+        email,
         password,
       }, (err, authResult) => {
         if (err) {
-          reject(Error(`browser.auth.service.ts[signupAndLogin()]: ${err.description}`))
+          reject(Error(`browser.auth.service.ts[signupAndLogin()] => ${err.description}`))
         }
         if (authResult && authResult.accessToken && authResult.idToken) {
           this.setAccessCookie(authResult.accessToken, authResult.idToken)
-            .then(idToken => this.getAuthenticatedUser(idToken as String, 'signupAndLogin'))
+            .then(res => this.getAuthenticatedUser(res.accessToken, res.idToken, 'signupAndLogin'))
             .then(user => resolve(user))
-            .catch(err => reject(Error(`browser.auth.service.ts[signupAndLogin()]: ${err}`)));
+            .catch(err => reject(Error(`browser.auth.service.ts[signupAndLogin()] => ${err}`)));
         }
       });
     });
@@ -78,7 +81,7 @@ export class BrowserAuthService implements AuthService {
         }
         if (authResult && authResult.accessToken && authResult.idToken) {
           this.setAccessCookie(authResult.accessToken, authResult.idToken)
-            .then(idToken => this.getAuthenticatedUser(idToken as String, 'login'))
+            .then(res => this.getAuthenticatedUser(res.accessToken, res.idToken, 'login'))
             .then(user => resolve(user))
             .catch(err => reject(Error(`browser.auth.service.ts[login()] => ${err}`)));
         }
@@ -121,7 +124,7 @@ export class BrowserAuthService implements AuthService {
         reject(Error(`browser.auth.service.ts[initAuth()] => ${err}`));
       }
       if (accessToken && idToken) {
-        this.getAuthenticatedUser(idToken, 'init')
+        this.getAuthenticatedUser(accessToken, idToken, 'init')
           .then(user => resolve(user))
           .catch(err => reject(Error(`browser.auth.service.ts[initAuth()] => ${err}`)))
       } else {
@@ -135,42 +138,63 @@ export class BrowserAuthService implements AuthService {
     });
   }
 
-  private getAuthenticatedUser(idToken: String, context: String) {
+  private getAuthenticatedUser(accessToken: String, idToken: String, context: String) {
     return new Promise((resolve, reject) => {
-      var query: any;
+      var query: any,
+          id: String = idToken,
+          access: String = accessToken;
+
       if (context === 'signupAndLogin') {
-        this._auth.client.userInfo(idToken, function(err, user) {
-          if (err) {
-            reject(`browser.auth.service.ts[getAuthenticatedUser()] => ${err}`);
-          } else {
-            query = {
-              mutation: createUserMutation,
-              variables: {
-                $idToken: idToken,
-                $name: user.name,
-                $email: user.email,
-                $avatarUrl: user.picture
-              }
-            };
-            this._api.mutate(query)
-              .do(user => resolve(user));
-        }});
+        var userObj = this._auth.client.userInfo(access, function(err, user) {
+            if (err) {
+              reject(`browser.auth.service.ts[getAuthenticatedUser()] => ${err}`);
+            } else {
+              return user;
+          }}),
+          xhr = userObj.request.xhr,
+          response = JSON.parse(xhr.responseText);
+
+          console.log(id, response);
+
+        query = {
+            mutation: createUserMutation,
+            variables: {
+              "idToken": id,
+              "username": response.name,
+              "email": response.email,
+              "avatarUrl": response.picture
+            }
+          };
+        this._api.mutate(query)
+          .do(response => {
+            if (response.errors) {
+              reject(Error(`browser.auth.service.ts[getAuthenticatedUser()] => ${response.errors[0].message}`));
+            } else {
+              resolve(response.data.createUser);
+            }
+          });
       } else if (context === 'login' || context === 'init') {
         query = {
           query: authUserQuery,
           variables: {
-            $id: idToken
+            "idToken": id
           }
         }
         this._api.query(query)
-          .do(user => resolve(user));
+          .do(response => {
+            if (response.errors) {
+              reject(Error(`browser.auth.service.ts[getAuthenticatedUser()] => ${response.errors[0].message}`));
+            } else {
+              resolve(response.data.createUser);
+            }
+          });
       } else {
         reject(Error('browser.auth.service.ts[getAuthenticatedUser()] => Unknown context provided for \"getAuthenticatedUser()\"'));
       }
     });
   }
 
-  private setAccessCookie(accessToken: string, idToken: string): Promise<Object> {
+  private setAccessCookie(accessToken: string, idToken: string): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
         this._cookies.put('AUID', accessToken);
@@ -179,7 +203,7 @@ export class BrowserAuthService implements AuthService {
       catch (err) {
         reject(Error(`browser.auth.service.ts[setAccessCookie()] => ${err}`));
       }
-      resolve(idToken);
+      resolve({accessToken, idToken});
     });
   } 
 
