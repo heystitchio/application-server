@@ -1,11 +1,14 @@
-import { Injectable }    from '@angular/core';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import gql from 'graphql-tag';
+import { Injectable }     from '@angular/core';
+import { Http,
+         Headers,
+         RequestOptions,
+         Response }       from '@angular/http';
+import { Observable }     from 'rxjs/Observable';
+import { CookieService }  from 'angular2-cookie/services/cookies.service';
+import gql                from 'graphql-tag';
 
-import { AuthService }   from './';
-import { ApiService }    from '../../shared/services/api';
-
-declare var auth0: any;
+import { AuthService }    from './';
+import { ApiService }     from '../../shared/services/api';
 
 const createUserMutation = gql`
   mutation createUser($idToken: String!, $username: String!, $email: String!, $avatarUrl: String!) {
@@ -37,182 +40,147 @@ const authUserQuery = gql`
 @Injectable()
 export class BrowserAuthService implements AuthService {
 
-  private _auth = new auth0.WebAuth({
-    domain: 'heystitchio.auth0.com',
-    clientID: 'mSKfZ1UMwag0Vibr2DzbURdX6wgf5z72',
-    callbackURL: 'http://localhost:3000',
-    responseType: 'token id_token'
-  });
+  private baseUrl = 'https://heystitchio.auth0.com';
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private options = new RequestOptions({ headers: this.headers })
 
   constructor(
     private _cookies: CookieService,
-    private _api: ApiService
+    private _api: ApiService,
+    private _http: Http
   ) {}
 
-  public signupAndLogin(email: String, password: String): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this._auth.signupAndAuthorize({
-        connection: 'Username-Password-Authentication',
-        email,
-        password,
-      }, (err, authResult) => {
-        if (err) {
-          reject(Error(`browser.auth.service.ts[signupAndLogin()] => ${err.description}`))
-        }
-        if (authResult && authResult.accessToken && authResult.idToken) {
-          this.setAccessCookie(authResult.accessToken, authResult.idToken)
-            .then(res => this.getAuthenticatedUser(res.accessToken, res.idToken, 'signupAndLogin'))
-            .then(user => resolve(user))
-            .catch(err => reject(Error(`browser.auth.service.ts[signupAndLogin()] => ${err}`)));
-        }
-      });
-    });
+  public signupAndLogin(email: String, password: String): Observable<any> {
+    return this.signupUser(email, password)
+      .flatMap(data => this.authenticateUser(data['email'], password))
+      .flatMap(data => this.getUserInfo(data['id_token']))
+      .flatMap(data => this.createUserInDatabase(data))
+      .catch((error:any) => Observable.throw(`browser.auth.service.ts[signupAndLogin()] => ${error}` || 'browser.auth.service.ts[signupAndLogin()] => An unknown error occurred.'));
   }
 
-  public login(username: String, password: String): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this._auth.client.login({
-        realm: 'Username-Password-Authentication',
-        username,
-        password
-      }, (err, authResult) => {
-        if (err) {
-          reject(Error(`browser.auth.service.ts[login()] => ${err.description}`));
-        }
-        if (authResult && authResult.accessToken && authResult.idToken) {
-          this.setAccessCookie(authResult.accessToken, authResult.idToken)
-            .then(res => this.getAuthenticatedUser(res.accessToken, res.idToken, 'login'))
-            .then(user => resolve(user))
-            .catch(err => reject(Error(`browser.auth.service.ts[login()] => ${err}`)));
-        }
-      });
-    });
+  public login(email: String, password: String): Observable<any> {
+    return this.authenticateUser(email, password)
+      .flatMap(data => this.getUserFromDatabase(data['id_token']))
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[login()] => ${error}` || 'browser.auth.service.ts[login()] => An unknown error occurred.'));
   }
 
-  public loginWithGoogle(): void {
-    this._auth.authorize({
-      connection: 'google-oauth2',
-    });
+  public logout(): void {
+    this.removeAccessCookies();
   }
 
-  public logout(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      try {
-        this._cookies.remove('AUID');
-        this._cookies.remove('USID');
-      }
-      catch(err) {
-        reject(Error(`browser.auth.service.ts[logout()] => ${err}`));
-      }
-      resolve({});
-    });
-  }
-
-  public isAuthenticated() {
-    return true;
+  public isAuthenticated(): Boolean {
+    return true || false;
   }
 
   public initAuth() {
-    return new Promise((resolve, reject) => {
-      var accessToken: String,
-          idToken: String;
-      try {
-        accessToken = this._cookies.get('AUID');
-        idToken = this._cookies.get('USID');
-      }
-      catch (err) {
-        reject(Error(`browser.auth.service.ts[initAuth()] => ${err}`));
-      }
-      if (accessToken && idToken) {
-        this.getAuthenticatedUser(accessToken, idToken, 'init')
-          .then(user => resolve(user))
-          .catch(err => reject(Error(`browser.auth.service.ts[initAuth()] => ${err}`)))
-      } else {
-        resolve({
-          id: null,
-          name: null,
-          email: null,
-          emailConfirm: null
-        });
-      }
-    });
+    return true;
   }
 
-  private getAuthenticatedUser(accessToken: String, idToken: String, context: String) {
-    return new Promise((resolve, reject) => {
-      var query: any,
-          id: String = idToken,
-          access: String = accessToken;
+  private signupUser(email: String, password: String): Observable<Response> {
+    var payload = {
+      "client_id": "mSKfZ1UMwag0Vibr2DzbURdX6wgf5z72",
+      "email": email,
+      "password": password,
+      "connection": "Username-Password-Authentication"
+    };
+    return this._http.post(`${this.baseUrl}/dbconnections/signup`, payload, this.options)
+      .map(response => response.json())
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[signupUser()] => ${error}` || 'browser.auth.service.ts[signupUser()] => An unknown error occurred.'));
+  }
 
-      if (context === 'signupAndLogin') {
-        var userObj = this._auth.client.userInfo(access, function(err, user) {
-            if (err) {
-              reject(`browser.auth.service.ts[getAuthenticatedUser()] => ${err}`);
-            } else {
-              return user;
-          }}),
-          xhr = userObj.request.xhr,
-          response = JSON.parse(xhr.responseText);
+  private authenticateUser(email: String, password: String): Observable<Response> {
+    var payload = {
+      "client_id": "mSKfZ1UMwag0Vibr2DzbURdX6wgf5z72",
+      "connection": "Username-Password-Authentication",
+      "grant_type": "password",
+      "username": email,
+      "password": password,
+      "scope": "openid"
+    };
+    return this._http.post(`${this.baseUrl}/oauth/ro`, payload, this.options)
+      .map(response => response.json())
+      .flatMap(response => this.setAccessCookies(response))
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[authenticateUser()] => ${error}` || 'browser.auth.service.ts[authenticateUser()] => An unknown error occurred.'));
+  }
 
-          console.log(id, response);
-
-        query = {
-            mutation: createUserMutation,
-            variables: {
-              "idToken": id,
-              "username": response.name,
-              "email": response.email,
-              "avatarUrl": response.picture
-            }
+  private getUserInfo(token): Observable<Response> {
+    var payload = {
+            "id_token": token
           };
-        this._api.mutate(query)
-          .do(response => {
-            if (response.errors) {
-              reject(Error(`browser.auth.service.ts[getAuthenticatedUser()] => ${response.errors[0].message}`));
-            } else {
-              resolve(response.data.createUser);
-            }
-          });
-      } else if (context === 'login' || context === 'init') {
+    return this._http.post(`${this.baseUrl}/tokeninfo`, payload, this.options)
+      .map(response => response.json())
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[getUserInfo()] => ${error}` || 'browser.auth.service.ts[getUserInfo()] => An unknown error occurred.'));
+  }
+
+  private createUserInDatabase(user): Observable<Object> {
+    var idToken = this._cookies.get('USID'),
         query = {
+          mutation: createUserMutation,
+          variables: {
+            "idToken": idToken,
+            "username": user.name,
+            "email": user.email,
+            "avatarUrl": `https://api.adorable.io/avatars/100/${idToken}.png`
+          }
+        },
+        response = {
+          error: null,
+          token: null,
+          current: null
+        };
+        response.current = this._api.mutate(query)
+          .map(response => response.json())
+          .catch((error: any) => {
+            return Observable.throw(`browser.auth.service.ts[createUserInDatabase()] => ${error}` || 'browser.auth.service.ts[createUserInDatabase()] => An unknown error occurred.')
+          });
+        response.token = idToken;
+
+    return Observable.of(response);
+  }
+
+  private getUserFromDatabase(idToken): Observable<Object> {
+    var query = {
           query: authUserQuery,
           variables: {
-            "idToken": id
+            "idToken": idToken
           }
-        }
-        this._api.query(query)
-          .do(response => {
-            if (response.errors) {
-              reject(Error(`browser.auth.service.ts[getAuthenticatedUser()] => ${response.errors[0].message}`));
-            } else {
-              resolve(response.data.createUser);
-            }
+        },
+        response = {
+          error: null,
+          token: null,
+          current: null,
+        };
+        response.current = this._api.query(query)
+          .map(response => response.json())
+          .catch((error: any) => {
+            response.error = error;
+            return Observable.throw(`browser.auth.service.ts[getUserFromDatabase()] => ${error}` || 'browser.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.')
           });
-      } else {
-        reject(Error('browser.auth.service.ts[getAuthenticatedUser()] => Unknown context provided for \"getAuthenticatedUser()\"'));
-      }
-    });
+        response.token = idToken;
+
+    return Observable.of(response);
   }
 
-  private setAccessCookie(accessToken: string, idToken: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      try {
-        this._cookies.put('AUID', accessToken);
-        this._cookies.put('USID', idToken);
-      }
-      catch (err) {
-        reject(Error(`browser.auth.service.ts[setAccessCookie()] => ${err}`));
-      }
-      resolve({accessToken, idToken});
-    });
-  } 
-
-  /*private setUserContext(user): void {
-    this._error.setUserContext(user);
+  private setAccessCookies(response: String): Observable<String> {
+    console.log(response);
+    try {
+      this._cookies.put('AUID', response['access_token']);
+      this._cookies.put('USID', response['id_token']);
+    }
+    catch (error) {
+      return Observable.throw(error => `browser.auth.service.ts[setAccessCookies()] => ${error}` || 'browser.auth.service.ts[setAccessCookies()] => An unknown error occurred.');
+    }
+    return Observable.of(response);
   }
 
-  private removeUserContext(): void {
-    this._error.removeUserContext();
-  }*/
+  private removeAccessCookies(): void {
+    try {
+      this._cookies.remove('AUID');
+      this._cookies.remove('USID');
+    }
+    catch (error) {
+      throw (Error(`browser.auth.service.ts[removeAccessCookies()] => ${error}` || 'browser.auth.service.ts[removeAccessCookies()] => An unknown error occurred.'));
+    }
+  }
   
 }

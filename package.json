@@ -55,7 +55,6 @@
     "@ngrx/store": "^2.2.1",
     "angular2-cookie": "^1.2.6",
     "angular2-express-engine": "~2.1.0-rc.1",
-    "angular2-jwt": "^0.1.28",
     "angular2-platform-node": "~2.1.0-rc.1",
     "angular2-universal": "~2.1.0-rc.1",
     "angular2-universal-polyfills": "~2.1.0-rc.1",

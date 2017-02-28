@@ -10,20 +10,17 @@ export class NodeAuthService implements AuthService {
     @Inject('req') private _req: any
   ) {}
 
+  public signupAndLogin(): void {
+    throw new Error("Signup event cannot be called while doing server side rendering");
+  }
+
   public login(): void {
     throw new Error("Login event cannot be called while doing server side rendering");
   }
 
-  public loginWithGoogle(): void {
-    throw new Error("Login event cannot be called while doing server side rendering");
-  }
 
   public logout(): void {
     throw new Error("Logout event cannot be called while doing server side rendering");
-  }
-
-  public signupAndLogin(): void {
-    throw new Error("Signup event cannot be called while doing server side rendering");
   }
 
   public updateUser(): void {

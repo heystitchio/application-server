@@ -4,6 +4,8 @@ import { ErrorHandler,
 import { Router }              from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule }        from '@angular/router';
+import { HttpModule,
+         Http }                from '@angular/http';
 import { UniversalModule,
          isBrowser,
          isNode,
@@ -47,8 +49,8 @@ export function getResponse() {
   return {};
 }
 
-export function getAuthService(CookieService, ApiService) {
-  return new BrowserAuthService(CookieService, ApiService);
+export function authServiceFactory(CookieService, ApiService, Http) {
+  return new BrowserAuthService(CookieService, ApiService, Http);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -70,6 +72,7 @@ export class RavenErrorHandler implements ErrorHandler {
   imports: [
     UniversalModule,
     ReactiveFormsModule,
+    HttpModule,
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
     ApolloModule.withClient(provideClient),
 
@@ -83,7 +86,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: getAuthService, deps: [CookieService, ApiService] },
+    { provide: AUTH_SERVICE, useFactory: authServiceFactory, deps: [CookieService, ApiService, Http] },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
 
     CacheService,

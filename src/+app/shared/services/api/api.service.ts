@@ -1,6 +1,7 @@
 import { Injectable }            from '@angular/core';
 import { Observable }            from 'rxjs/Observable';
 import { isNode }                from 'angular2-universal';
+import { Store }                 from '@ngrx/store';
 
 import { Apollo,
          ApolloQueryObservable } from 'apollo-angular';
@@ -12,16 +13,24 @@ import { ApolloClient,
 
 import { CacheService  }         from './../cache/cache.service';
 import { HashService  }          from './../cache/hash.service';
+import { Auth }                  from '../../../+auth/models';
 
 
 @Injectable()
 export class ApiService {
 
+  private token$: Observable<string>;
+
   constructor(
     public _apollo: Apollo,
     public _cache: CacheService,
+    private _store: Store<any>,
     private _hash: HashService
-  ) {}
+  ) {
+    this.token$ = _store.select<Auth>('auth')
+      .map(data => data['token'])
+      .filter(token => !!token);
+  }
 
   watchQuery(options: WatchQueryOptions, autoClear: boolean = true): Observable<any> {
     let key = this._hash.hashCodeString(options.toString());

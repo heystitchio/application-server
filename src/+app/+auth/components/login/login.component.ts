@@ -7,6 +7,7 @@ import { FormGroup,
          FormControl,
          Validators,
          FormBuilder }            from '@angular/forms';
+import { Store }                  from '@ngrx/store';
 import { Subscription }           from 'rxjs/Subscription';
 
 import { MetaService,
@@ -23,6 +24,7 @@ import { AuthModelService }       from '../../models';
 })
 export class LoginComponent implements OnInit {
 
+  public currentUser: any;
   public loginForm: FormGroup;
   public error: string;
 
@@ -52,6 +54,8 @@ export class LoginComponent implements OnInit {
     });
 
     this.errorSubscription = this._auth.error$.subscribe(error => this.error = error);
+
+    this.currentUser = this._auth.current$.subscribe(user => this.currentUser = user);
   }
 
   ngOnInit(): void {
