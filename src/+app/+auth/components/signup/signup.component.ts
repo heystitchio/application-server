@@ -1,8 +1,10 @@
 import { Component,
          ChangeDetectionStrategy,
          Inject,
+         OnDestroy,
          OnInit,
          ViewEncapsulation }      from '@angular/core';
+import { Router }                 from '@angular/router'; 
 import { FormGroup, 
          FormControl,
          Validators,
@@ -21,16 +23,18 @@ import { AuthModelService }       from '../../models';
   templateUrl: './signup.component.html',
   styleUrls: ['../auth.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
 
   public signupForm: FormGroup;
   public error: string;
 
+  private tokenSubscription: Subscription;
   private errorSubscription: Subscription;
   private meta: MetaDefinition[] = [];
 
   constructor(
     private _auth: AuthModelService,
+    private _router: Router,
     private _meta: MetaService,
     private _fb: FormBuilder
   ) {
@@ -54,12 +58,21 @@ export class SignupComponent implements OnInit {
       ]]
     });
 
+    this.tokenSubscription = this._auth.token$.subscribe(token => {
+      if (token) { this._router.navigate(['/discover']); }
+    });
+
     this.errorSubscription = this._auth.error$.subscribe(error => this.error = error);
   }
 
   ngOnInit(): void {
     this._meta.setTitle('Sign Up');
     this._meta.addTags(this.meta);
+  }
+
+  ngOnDestroy(): void {
+    this.tokenSubscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
   }
 
   signup(): void {

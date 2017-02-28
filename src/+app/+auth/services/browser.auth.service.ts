@@ -11,11 +11,12 @@ import { AuthService }    from './';
 import { ApiService }     from '../../shared/services/api';
 
 const createUserMutation = gql`
-  mutation createUser($idToken: String!, $username: String!, $email: String!, $avatarUrl: String!) {
-    createUser(authProvider: {auth0: {idToken: $idToken}}, username: $username, email: $email, avatarUrl: $avatarUrl) {
+  mutation createUser($idToken: String!, $username: String!, $email: String!, $emailConfirm: Boolean!, $avatarUrl: String!) {
+    createUser(authProvider: {auth0: {idToken: $idToken}}, username: $username, email: $email, emailConfirm: $emailConfirm, avatarUrl: $avatarUrl) {
       id
       username
       email
+      emailConfirm
       avatarUrl
     }
   }
@@ -36,6 +37,10 @@ const authUserQuery = gql`
   }
 `
 
+class UserResponse {
+
+}
+
 
 @Injectable()
 export class BrowserAuthService implements AuthService {
@@ -55,13 +60,19 @@ export class BrowserAuthService implements AuthService {
       .flatMap(data => this.authenticateUser(data['email'], password))
       .flatMap(data => this.getUserInfo(data['id_token']))
       .flatMap(data => this.createUserInDatabase(data))
-      .catch((error:any) => Observable.throw(`browser.auth.service.ts[signupAndLogin()] => ${error}` || 'browser.auth.service.ts[signupAndLogin()] => An unknown error occurred.'));
+      .catch((err:any) => Observable.throw(`browser.auth.service.ts[signupAndLogin()] => ${err}` || 'browser.auth.service.ts[signupAndLogin()] => An unknown error occurred.'));
   }
 
   public login(email: String, password: String): Observable<any> {
+    var error = null;
+
     return this.authenticateUser(email, password)
       .flatMap(data => this.getUserFromDatabase(data['id_token']))
-      .catch((error: any) => Observable.throw(`browser.auth.service.ts[login()] => ${error}` || 'browser.auth.service.ts[login()] => An unknown error occurred.'));
+      .map(data => data['error'] = error)
+      .catch((err: any) => {
+        error = err;
+        return Observable.throw(`browser.auth.service.ts[login()] => ${err}` || 'browser.auth.service.ts[login()] => An unknown error occurred.')
+      });
   }
 
   public logout(): void {
@@ -120,22 +131,13 @@ export class BrowserAuthService implements AuthService {
             "idToken": idToken,
             "username": user.name,
             "email": user.email,
+            "emailConfirm": user.email_verified,
             "avatarUrl": `https://api.adorable.io/avatars/100/${idToken}.png`
           }
-        },
-        response = {
-          error: null,
-          token: null,
-          current: null
         };
-        response.current = this._api.mutate(query)
-          .map(response => response.json())
-          .catch((error: any) => {
-            return Observable.throw(`browser.auth.service.ts[createUserInDatabase()] => ${error}` || 'browser.auth.service.ts[createUserInDatabase()] => An unknown error occurred.')
-          });
-        response.token = idToken;
-
-    return Observable.of(response);
+    return this._api.mutate(query)
+      .map(response => { return { error: null, token: idToken, user: response }})
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[createUserInDatabase()] => ${error}` || 'browser.auth.service.ts[createUserInDatabase()] => An unknown error occurred.'));
   }
 
   private getUserFromDatabase(idToken): Observable<Object> {
@@ -144,25 +146,13 @@ export class BrowserAuthService implements AuthService {
           variables: {
             "idToken": idToken
           }
-        },
-        response = {
-          error: null,
-          token: null,
-          current: null,
         };
-        response.current = this._api.query(query)
-          .map(response => response.json())
-          .catch((error: any) => {
-            response.error = error;
-            return Observable.throw(`browser.auth.service.ts[getUserFromDatabase()] => ${error}` || 'browser.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.')
-          });
-        response.token = idToken;
-
-    return Observable.of(response);
+    return this._api.query(query)
+      .map(response => { return { error: null, token: idToken, user: response }})
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[getUserFromDatabase()] => ${error}` || 'browser.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
   }
 
   private setAccessCookies(response: String): Observable<String> {
-    console.log(response);
     try {
       this._cookies.put('AUID', response['access_token']);
       this._cookies.put('USID', response['id_token']);

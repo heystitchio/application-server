@@ -1,8 +1,10 @@
 import { Component,
          ChangeDetectionStrategy,
          Inject,
+         OnDestroy,
          OnInit,
-         ViewEncapsulation }      from '@angular/core';      
+         ViewEncapsulation }      from '@angular/core';    
+import { Router }                 from '@angular/router';  
 import { FormGroup, 
          FormControl,
          Validators,
@@ -22,17 +24,18 @@ import { AuthModelService }       from '../../models';
   templateUrl: './login.component.html',
   styleUrls: ['../auth.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  public currentUser: any;
   public loginForm: FormGroup;
   public error: string;
 
+  private tokenSubscription: Subscription;
   private errorSubscription: Subscription;
   private meta: MetaDefinition[] = [];
 
   constructor(
     private _auth: AuthModelService,
+    private _router: Router,
     private _meta: MetaService,
     private _fb: FormBuilder
   ) {
@@ -53,14 +56,21 @@ export class LoginComponent implements OnInit {
       "password": ["", Validators.required]
     });
 
-    this.errorSubscription = this._auth.error$.subscribe(error => this.error = error);
+    this.tokenSubscription = this._auth.token$.subscribe(token => {
+      if (token) { this._router.navigate(['/discover']); }
+    });
 
-    this.currentUser = this._auth.current$.subscribe(user => this.currentUser = user);
+    this.errorSubscription = this._auth.error$.subscribe(error => this.error = error);
   }
 
   ngOnInit(): void {
     this._meta.setTitle('Log In');
     this._meta.addTags(this.meta);
+  }
+
+  ngOnDestroy(): void {
+    this.tokenSubscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
   }
 
   login(): void {
