@@ -46,7 +46,7 @@ export class NodeAuthService implements AuthService {
 
     if (idToken) {
       return this.getUserFromDatabase(idToken)
-        .catch((error: any) => Observable.throw(`browser.auth.service.ts[initAuth()] => ${error}` || 'browser.auth.service.ts[initAuth()] => An unknown error occurred.'));
+        .catch((error: any) => Observable.throw(`node.auth.service.ts[initAuth()] => ${error}` || 'node.auth.service.ts[initAuth()] => An unknown error occurred.'));
     }
   }
 
@@ -59,7 +59,7 @@ export class NodeAuthService implements AuthService {
       };
   return this._api.query(query)
     .map(response => { return { error: null, token: idToken, user: response }})
-    .catch((error: any) => Observable.throw(`browser.auth.service.ts[getUserFromDatabase()] => ${error}` || 'browser.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
+    .catch((error: any) => Observable.throw(`node.auth.service.ts[getUserFromDatabase()] => ${error}` || 'node.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
   }
 
 }

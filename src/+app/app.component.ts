@@ -18,7 +18,7 @@ import { AuthModelService }       from './+auth/models';
 export class AppComponent {
   constructor(
     public _auth: AuthModelService,
-    private _router: Router
+    public _router: Router
   ){
     this._auth.initAuth();
   }

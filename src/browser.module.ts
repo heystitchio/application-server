@@ -4,8 +4,7 @@ import { ErrorHandler,
 import { Router }              from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule }        from '@angular/router';
-import { HttpModule,
-         Http }                from '@angular/http';
+import { Http }                from '@angular/http';
 import { UniversalModule,
          isBrowser,
          isNode,
@@ -26,7 +25,7 @@ import { AppModule,
          AppComponent }        from './+app/app.module';
 import { SharedModule }        from './+app/shared/shared.module';
 import { CacheService }        from './+app/shared/services/cache/cache.service';
-import { ApiService }          from './+app/shared/services/api/api.service';
+import { ApiService }          from './+app/shared/services/api';
 import { MetaService }         from './+app/shared/meta/meta.service';
 import { AUTH_SERVICE }        from './+app/+auth/services/auth.service';
 import { BrowserAuthService }  from './+app/+auth/services/browser.auth.service';
@@ -72,7 +71,6 @@ export class RavenErrorHandler implements ErrorHandler {
   imports: [
     UniversalModule,
     ReactiveFormsModule,
-    HttpModule,
     RouterModule.forRoot([], { useHash: false, preloadingStrategy: IdlePreload }),
     ApolloModule.withClient(provideClient),
 

@@ -2,7 +2,7 @@ import { Inject, Injectable, isDevMode } from '@angular/core';
 
 @Injectable()
 export class CacheService {
-  static KEY = '__APOLLO_STATE__';
+  static KEY = 'CACHE';
 
   constructor(@Inject('LRU') public _cache: Map<string, any>) {
 

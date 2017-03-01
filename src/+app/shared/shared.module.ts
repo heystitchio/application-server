@@ -5,7 +5,7 @@ import { RouterModule }           from '@angular/router';
 import { ReactiveFormsModule }    from '@angular/forms';
 
 import { SharedComponentsModule } from './components/components.module';
-import { ApiService }             from './services/api/api.service';
+import { ApiService }             from './services/api';
 import { HashService }            from './services/cache/hash.service';
 
 

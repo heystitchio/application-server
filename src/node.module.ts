@@ -16,7 +16,7 @@ import { AppModule,
          AppComponent }    from './+app/app.module';
 import { SharedModule }    from './+app/shared/shared.module';
 import { CacheService }    from './+app/shared/services/cache/cache.service';
-import { ApiService }      from './+app/shared/services/api/api.service';
+import { ApiService }      from './+app/shared/services/api';
 import { MetaService }     from './+app/shared/meta/meta.service';
 import { AUTH_SERVICE }    from './+app/+auth/services/auth.service';
 import { NodeAuthService } from './+app/+auth/services/node.auth.service';
@@ -75,7 +75,7 @@ export class MainModule {
   ) {}
 
   universalDoDehydrate = (universalCache) => {
-    universalCache[CacheService.KEY] = {apollo: {data: client.store.getState().apollo.data}};
+    universalCache[CacheService.KEY].APOLLO_STATE = { apollo: { data: client.store.getState().apollo.data }};
   }
 
   universalAfterDehydrate = () => {
