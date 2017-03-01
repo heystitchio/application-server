@@ -147,7 +147,7 @@ export class BrowserAuthService implements AuthService {
           }
         };
     return this._api.query(query)
-      .map(response => { return { error: null, token: idToken, user: response.data }})
+      .map(response => { return { error: null, token: idToken, user: response.data.User }})
       .catch((error: any) => Observable.throw(`browser.auth.service.ts[getUserFromDatabase()] => ${error}` || 'browser.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
   }
 
