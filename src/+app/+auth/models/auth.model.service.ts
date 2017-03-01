@@ -50,6 +50,16 @@ export class AuthModelService {
     let signupFailure$ = signups.filter((payload: Auth) => payload.token === null)
       .map((payload) => ({type: AuthActions.AUTH_SIGNUP_USER_FAIL, payload}));
 
+    let inits = this.actions$
+      .filter(action => action.type === AuthActions.AUTH_INIT)
+      .do(() => _store.dispatch({type: AuthActions.AUTH_INIT_IN_PROGRESS}))
+      .mergeMap(action => _auth.initAuth()).share();
+
+    let initSuccess$ = inits.filter((payload: Auth) => payload.token !== null)
+      .map((payload) => ({type: AuthActions.AUTH_USER_AUTHENTICATED, payload}));
+    let initFailure$ = inits.filter((payload: Auth) => payload.token === null)
+      .map((payload) => ({type: AuthActions.AUTH_INIT_FAIL, payload}));
+
     let logouts = this.actions$
       .filter(action => action.type === AuthActions.AUTH_LOGOUT_USER)
       .do(() => _store.dispatch({type: AuthActions.AUTH_LOGOUT_USER_IN_PROGRESS}))
@@ -60,16 +70,28 @@ export class AuthModelService {
       .subscribe((action: Action) => _store.dispatch(action));
   }
 
-  signup(email, password) {
+  signup(email, password): void {
     this.actions$.next({type: AuthActions.AUTH_SIGNUP_USER, payload: {email, password}});
   }
 
-  login(email, password) {
+  login(email, password): void {
     this.actions$.next({type: AuthActions.AUTH_LOGIN_USER, payload: {email, password}});
   }
 
-  logout() {
+  logout(): void {
     this.actions$.next({type: AuthActions.AUTH_LOGOUT_USER});
+  }
+
+  initAuth(): void {
+    this.actions$.next({type: AuthActions.AUTH_INIT});
+  }
+
+  isAuthenticated(): Boolean {
+    if (this.token$) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

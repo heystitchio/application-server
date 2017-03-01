@@ -5,8 +5,7 @@ import { Component,
 import { Router }                 from '@angular/router';
 import { isBrowser }              from 'angular2-universal';
 
-import { AUTH_SERVICE,
-         AuthService }            from './+auth/services/auth.service';
+import { AuthModelService }       from './+auth/models';
 
 
 @Component({
@@ -18,11 +17,9 @@ import { AUTH_SERVICE,
 })
 export class AppComponent {
   constructor(
-    @Inject(AUTH_SERVICE) _auth: AuthService,
-    public _router: Router
+    public _auth: AuthModelService,
+    private _router: Router
   ){
-    if (isBrowser) {
-      _auth.initAuth();
-    }
+    this._auth.initAuth();
   }
 }

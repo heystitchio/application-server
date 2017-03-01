@@ -1,10 +1,11 @@
 import { Component,
          ChangeDetectionStrategy,
-         Inject,
+         OnDestroy,
          ViewEncapsulation }      from '@angular/core';
+import { Subscription }           from 'rxjs/Subscription';
 
-import { AUTH_SERVICE,
-         AuthService }            from '../../../+auth/services/auth.service';
+import { AuthModelService,
+         AuthUser }               from '../../../+auth/models';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Default,
@@ -13,8 +14,20 @@ import { AUTH_SERVICE,
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnDestroy {
+
+  public authUser: AuthUser;
+
+  private authUserSubscription: Subscription;
+
   constructor(
-    @Inject(AUTH_SERVICE) public _auth: AuthService
-  ){}
+    public _auth: AuthModelService
+  ) {
+    this.authUserSubscription = this._auth.current$.subscribe(user => this.authUser = user);
+  }
+
+  ngOnDestroy(): void {
+    this.authUserSubscription.unsubscribe();
+  }
+
 }

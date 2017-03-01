@@ -8,7 +8,6 @@ export interface AuthService {
   signupAndLogin(username?: String, password?: String): any;
   login(email?: String, password?: String): any;
   logout(): any;
-  isAuthenticated(): Boolean;
   initAuth?(): any;
 
 }

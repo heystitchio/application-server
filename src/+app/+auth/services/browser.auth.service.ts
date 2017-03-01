@@ -23,8 +23,8 @@ const createUserMutation = gql`
 `
 
 const authUserQuery = gql`
-  query ($idToken: String!) {
-    user {
+  query User($idToken: String!) {
+    User(auth0UserId: $idToken) {
       id
       avatarUrl
       chats
@@ -68,23 +68,20 @@ export class BrowserAuthService implements AuthService {
 
     return this.authenticateUser(email, password)
       .flatMap(data => this.getUserFromDatabase(data['id_token']))
-      .map(data => data['error'] = error)
-      .catch((err: any) => {
-        error = err;
-        return Observable.throw(`browser.auth.service.ts[login()] => ${err}` || 'browser.auth.service.ts[login()] => An unknown error occurred.')
-      });
+      .catch((err: any) => Observable.throw(`browser.auth.service.ts[login()] => ${err}` || 'browser.auth.service.ts[login()] => An unknown error occurred.'));
   }
 
   public logout(): void {
     this.removeAccessCookies();
   }
 
-  public isAuthenticated(): Boolean {
-    return true || false;
-  }
+  public initAuth(): Observable<Object> {
+    var idToken = this._cookies.get('USID');
 
-  public initAuth() {
-    return true;
+    if (idToken) {
+      return this.getUserFromDatabase(idToken)
+        .catch((error: any) => Observable.throw(`browser.auth.service.ts[initAuth()] => ${error}` || 'browser.auth.service.ts[initAuth()] => An unknown error occurred.'));
+    }
   }
 
   private signupUser(email: String, password: String): Observable<Response> {

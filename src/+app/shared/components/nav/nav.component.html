@@ -18,6 +18,7 @@
           <li><button type="button" class="btn navbar-btn" routerLink="login">Log in</button></li>
         </ul>
         <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding-left: 25px;" *ngIf="_auth.isAuthenticated()">
+          <li>{{ authUser.id }}</li>
           <li><button type="button" class="btn navbar-btn" (click)="_auth.logout()">Sign out</button></li>
         </ul>
         <ul class="nav navbar-nav navbar-right" style="border-left: 1px solid #eee;padding: 0 7px;" *ngIf="_auth.isAuthenticated()">

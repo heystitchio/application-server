@@ -16,7 +16,12 @@ export class AuthActions {
 
   static AUTH_TOKEN_EXPIRED = '[Auth] Token Expired';
 
-  static INIT = '[Auth] Init';
+  static AUTH_INIT = '[Auth] Init';
+  static AUTH_INIT_IN_PROGRESS = '[Auth] Init In Progress';
+  static AUTH_INIT_FAIL = '[Auth] Init Fail';
+
+  static INIT  = '[Auth] Service Init';
+
 
   /*
   // User Profile Actions
