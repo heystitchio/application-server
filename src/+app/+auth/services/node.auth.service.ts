@@ -1,5 +1,9 @@
 import { Inject,
          Injectable }  from '@angular/core';
+import { Http,
+         Headers,
+         RequestOptions,
+         Response }       from '@angular/http';
 import { Observable }  from 'rxjs/Observable';
 import gql             from 'graphql-tag';
 
@@ -30,9 +34,14 @@ const authUserQuery = gql`
 
 export class NodeAuthService implements AuthService {
 
+  private baseUrl = 'https://heystitchio.auth0.com';
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private options = new RequestOptions({ headers: this.headers })
+
   constructor(
-    @Inject('req') private _req: any,
-    //private _api: ApiService
+    // private _api: ApiService,
+    private _http: Http,
+    @Inject('req') private _req: any
   ) {}
 
   public signupAndLogin(): void {
@@ -48,28 +57,38 @@ export class NodeAuthService implements AuthService {
   }
 
   public initAuth() {
-    
+    console.log(this._req);
   }
 
   /*public initAuth(): Observable<Object> {
-    var idToken = this._req.cookies['USID'];
+    var token = this._req.cookies['USID'];
 
-    if (idToken) {
-      return this.getUserFromDatabase(idToken)
-        .catch((error: any) => Observable.throw(`node.auth.service.ts[initAuth()] => ${error}` || 'node.auth.service.ts[initAuth()] => An unknown error occurred.'));
+    if (token != null) {
+      return this.getUserInfo(token)
+        .flatMap(data => this.getUserFromDatabase(data['token'], data['user']['user_id']))
+        .catch((error: any) => Observable.throw(`browser.auth.service.ts[initAuth()] => ${error}` || 'browser.auth.service.ts[initAuth()] => An unknown error occurred.'));
     }
   }
 
-  private getUserFromDatabase(idToken): Observable<Object> {
-  var query = {
-        query: authUserQuery,
-        variables: {
-          "idToken": idToken
-        }
-      };
-  return this._api.query(query)
-    .map(response => { return { error: null, token: idToken, user: response }})
-    .catch((error: any) => Observable.throw(`node.auth.service.ts[getUserFromDatabase()] => ${error}` || 'node.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
+  private getUserInfo(token: String): Observable<Response> {
+    var payload = {
+            "id_token": token
+          };
+    return this._http.post(`${this.baseUrl}/tokeninfo`, payload, this.options)
+      .map(response => { return { user: response.json(), token: token }})
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[getUserInfo()] => ${error}` || 'browser.auth.service.ts[getUserInfo()] => An unknown error occurred.'));
+  }
+
+  private getUserFromDatabase(token: String, authId: String): Observable<Object> {
+    var query = {
+          query: authUserQuery,
+          variables: {
+            "idToken": authId
+          }
+        };
+    return this._api.query(query)
+      .map(response => { return { error: null, token: token, user: response.data.User }})
+      .catch((error: any) => Observable.throw(`browser.auth.service.ts[getUserFromDatabase()] => ${error}` || 'browser.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
   }*/
 
 }

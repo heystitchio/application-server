@@ -1,26 +1,27 @@
 import { ErrorHandler,
          NgModule,
-         OpaqueToken }     from '@angular/core';
-import { ReactiveFormsModule }     from '@angular/forms';
-import { RouterModule }    from '@angular/router';
+         OpaqueToken }         from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule }        from '@angular/router';
+import { Http }                from '@angular/http';
 import { UniversalModule,
          isBrowser,
-         isNode }          from 'angular2-universal/node';
+         isNode }              from 'angular2-universal/node';
 
-import { ApolloClient }    from 'apollo-client';
-import { ApolloModule }    from 'apollo-angular';
+import { ApolloClient }        from 'apollo-client';
+import { ApolloModule }        from 'apollo-angular';
 import { client,
-         provideClient }   from './apollo.node';
+         provideClient }       from './apollo.node';
 
 import { AppModule,
-         AppComponent }    from './+app/app.module';
-import { SharedModule }    from './+app/shared/shared.module';
+         AppComponent }        from './+app/app.module';
+import { SharedModule }        from './+app/shared/shared.module';
 import { CacheService,
-         HashService }     from './+app/shared/services/cache';
-import { ApiService }      from './+app/shared/services/api';
-import { MetaService }     from './+app/shared/meta/meta.service';
-import { AUTH_SERVICE }    from './+app/+auth/services/auth.service';
-import { NodeAuthService } from './+app/+auth/services/node.auth.service';
+         HashService }         from './+app/shared/services/cache';
+import { ApiService }          from './+app/shared/services/api/api.service';
+import { MetaService }         from './+app/shared/meta/meta.service';
+import { AUTH_SERVICE }        from './+app/+auth/services/auth.service';
+import { NodeAuthService }     from './+app/+auth/services/node.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
 
@@ -37,8 +38,8 @@ export function getResponse(): any {
   return Zone.current.get('res') || {};
 }
 
-export function authServiceFactory(req/*, ApiService*/) {
-  return new NodeAuthService(req/*, ApiService*/);
+export function authServiceFactory(/*api: ApiService, */http: Http, req: any) {
+  return new NodeAuthService(/*api,*/ http, req);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -61,7 +62,7 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: authServiceFactory, deps: ['req'/*, ApiService*/] },
+    { provide: AUTH_SERVICE, useFactory: authServiceFactory, deps: [/*ApiService,*/ Http, 'req'] },
 
     CacheService,
     HashService,

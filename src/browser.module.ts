@@ -1,7 +1,6 @@
 import { ErrorHandler,
          NgModule,
          OpaqueToken }         from '@angular/core';
-import { Router }              from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule }        from '@angular/router';
 import { Http }                from '@angular/http';
@@ -49,8 +48,8 @@ export function getResponse() {
   return {};
 }
 
-export function authServiceFactory(CookieService, ApiService, Http) {
-  return new BrowserAuthService(CookieService, ApiService, Http);
+export function authServiceFactory(cookie: CookieService, api: ApiService, http: Http) {
+  return new BrowserAuthService(cookie, api, http);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -61,7 +60,7 @@ Raven
   .install();
 
 export class RavenErrorHandler implements ErrorHandler {
-  handleError(err:any) : void {
+  handleError(err: any) : void {
     Raven.captureException(err.originalError || err);
   }
 }

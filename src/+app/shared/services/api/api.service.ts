@@ -11,8 +11,8 @@ import { ApolloClient,
          MutationOptions,
          SubscriptionOptions }   from 'apollo-client';
 
-import { CacheService  }         from './../cache/cache.service';
-import { HashService  }          from './../cache/hash.service';
+import { CacheService  }         from './../cache';
+import { HashService  }          from './../cache';
 import { Auth }                  from '../../../+auth/models';
 
 
