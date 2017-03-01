@@ -2,6 +2,7 @@ import { Component,
          ChangeDetectionStrategy,
          OnDestroy,
          ViewEncapsulation }      from '@angular/core';
+import { Router }                 from '@angular/router';
 import { Subscription }           from 'rxjs/Subscription';
 
 import { AuthModelService,
@@ -21,7 +22,8 @@ export class MainNavComponent implements OnDestroy {
   private authUserSubscription: Subscription;
 
   constructor(
-    public _auth: AuthModelService
+    public _auth: AuthModelService,
+    private _router: Router
   ) {
     this.authUserSubscription = this._auth.current$.subscribe(user => this.authUser = user);
   }
@@ -36,6 +38,7 @@ export class MainNavComponent implements OnDestroy {
 
   logout() {
     this._auth.logout();
+    this._router.navigate(['/login']);
   }
 
 }
