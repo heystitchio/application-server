@@ -27,19 +27,21 @@ const authUserQuery = gql`
     User(auth0UserId: $idToken) {
       id
       avatarUrl
-      chats
       email
       emailConfirm
-      followedProjects
       name
-      notifications
+      notifications {
+        id
+      }
+      chats {
+        id
+      }
+      followedProjects {
+        id
+      }
     }
   }
 `
-
-class UserResponse {
-
-}
 
 
 @Injectable()

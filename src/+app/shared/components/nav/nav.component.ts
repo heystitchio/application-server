@@ -16,7 +16,7 @@ import { AuthModelService,
 })
 export class MainNavComponent implements OnDestroy {
 
-  public authUser: AuthUser;
+  public authUser: AuthUser = null;
 
   private authUserSubscription: Subscription;
 
@@ -28,6 +28,14 @@ export class MainNavComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.authUserSubscription.unsubscribe();
+  }
+
+  isAuthenticated() {
+    return this.authUser && this.authUser != null;
+  }
+
+  logout() {
+    this._auth.logout();
   }
 
 }

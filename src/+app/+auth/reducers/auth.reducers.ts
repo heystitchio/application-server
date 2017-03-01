@@ -15,8 +15,7 @@ export function authReducer(state: Auth = initialState, action: Action) {
 
   switch (action.type) {
     case AuthActions.AUTH_USER_AUTHENTICATED:
-      return Object.assign({}, state,
-        {token: action.payload.token, current: action.payload.user, error: null});
+      return Object.assign({}, state, {token: action.payload.token, current: action.payload.user, error: null});
 
     case AuthActions.AUTH_LOGOUT_USER_SUCCESS:
       return Object.assign({}, initialState);

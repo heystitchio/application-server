@@ -24,7 +24,8 @@ import * as Raven              from 'raven-js';
 import { AppModule,
          AppComponent }        from './+app/app.module';
 import { SharedModule }        from './+app/shared/shared.module';
-import { CacheService }        from './+app/shared/services/cache/cache.service';
+import { CacheService,
+         HashService }         from './+app/shared/services/cache';
 import { ApiService }          from './+app/shared/services/api';
 import { MetaService }         from './+app/shared/meta/meta.service';
 import { AUTH_SERVICE }        from './+app/+auth/services/auth.service';
@@ -88,6 +89,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: ErrorHandler, useClass: RavenErrorHandler },
 
     CacheService,
+    HashService,
     MetaService,
     CookieService
   ]

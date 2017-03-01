@@ -63,7 +63,8 @@ export class AuthModelService {
     let logouts = this.actions$
       .filter(action => action.type === AuthActions.AUTH_LOGOUT_USER)
       .do(() => _store.dispatch({type: AuthActions.AUTH_LOGOUT_USER_IN_PROGRESS}))
-      .mergeMap(action => _auth.logout()).share();
+      .do(() => _auth.logout())
+      .map(() => ({type: AuthActions.AUTH_LOGOUT_USER_SUCCESS}));
 
     Observable
       .merge(loginSuccess$, loginFailure$, signupSuccess$, signupFailure$, logouts)
@@ -84,14 +85,6 @@ export class AuthModelService {
 
   initAuth(): void {
     this.actions$.next({type: AuthActions.AUTH_INIT});
-  }
-
-  isAuthenticated(): Boolean {
-    if (this.token$) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
 }

@@ -4,19 +4,25 @@ import { Observable }  from 'rxjs/Observable';
 import gql             from 'graphql-tag';
 
 import { AuthService } from './';
-import { ApiService }  from '../../shared/services/api';
+// import { ApiService }  from '../../shared/services/api';
 
 const authUserQuery = gql`
   query User($idToken: String!) {
     User(auth0UserId: $idToken) {
       id
       avatarUrl
-      chats
       email
       emailConfirm
-      followedProjects
       name
-      notifications
+      notifications {
+        id
+      }
+      chats {
+        id
+      }
+      followedProjects {
+        id
+      }
     }
   }
 `
@@ -26,7 +32,7 @@ export class NodeAuthService implements AuthService {
 
   constructor(
     @Inject('req') private _req: any,
-    private _api: ApiService
+    //private _api: ApiService
   ) {}
 
   public signupAndLogin(): void {
@@ -41,7 +47,11 @@ export class NodeAuthService implements AuthService {
     throw new Error("Logout event cannot be called while doing server side rendering");
   }
 
-  public initAuth(): Observable<Object> {
+  public initAuth() {
+    
+  }
+
+  /*public initAuth(): Observable<Object> {
     var idToken = this._req.cookies['USID'];
 
     if (idToken) {
@@ -60,6 +70,6 @@ export class NodeAuthService implements AuthService {
   return this._api.query(query)
     .map(response => { return { error: null, token: idToken, user: response }})
     .catch((error: any) => Observable.throw(`node.auth.service.ts[getUserFromDatabase()] => ${error}` || 'node.auth.service.ts[getUserFromDatabase()] => An unknown error occurred.'));
-  }
+  }*/
 
 }

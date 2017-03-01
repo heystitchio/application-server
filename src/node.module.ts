@@ -15,7 +15,8 @@ import { client,
 import { AppModule,
          AppComponent }    from './+app/app.module';
 import { SharedModule }    from './+app/shared/shared.module';
-import { CacheService }    from './+app/shared/services/cache/cache.service';
+import { CacheService,
+         HashService }     from './+app/shared/services/cache';
 import { ApiService }      from './+app/shared/services/api';
 import { MetaService }     from './+app/shared/meta/meta.service';
 import { AUTH_SERVICE }    from './+app/+auth/services/auth.service';
@@ -23,7 +24,6 @@ import { NodeAuthService } from './+app/+auth/services/node.auth.service';
 
 import './+app/shared/lib/rxjs-operators';
 
-declare var authenticationId: any;
 
 export function getLRU(): any {
   return new Map();
@@ -37,8 +37,8 @@ export function getResponse(): any {
   return Zone.current.get('res') || {};
 }
 
-export function authServiceFactory(req, ApiService) {
-  return new NodeAuthService(req, ApiService);
+export function authServiceFactory(req/*, ApiService*/) {
+  return new NodeAuthService(req/*, ApiService*/);
 }
 
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
@@ -61,9 +61,10 @@ export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: authServiceFactory, deps: ['req', ApiService] },
+    { provide: AUTH_SERVICE, useFactory: authServiceFactory, deps: ['req'/*, ApiService*/] },
 
     CacheService,
+    HashService,
     MetaService
   ]
 })
@@ -75,7 +76,7 @@ export class MainModule {
   ) {}
 
   universalDoDehydrate = (universalCache) => {
-    universalCache[CacheService.KEY].APOLLO_STATE = { apollo: { data: client.store.getState().apollo.data }};
+    universalCache[CacheService.KEY] = { APOLLO_STATE: { apollo: { data: client.store.getState().apollo.data }}};
   }
 
   universalAfterDehydrate = () => {

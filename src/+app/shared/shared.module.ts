@@ -6,7 +6,6 @@ import { ReactiveFormsModule }    from '@angular/forms';
 
 import { SharedComponentsModule } from './components/components.module';
 import { ApiService }             from './services/api';
-import { HashService }            from './services/cache/hash.service';
 
 
 const MODULES = [
@@ -25,8 +24,7 @@ const COMPONENTS = [
 ];
 
 const PROVIDERS = [
-  ApiService,
-  HashService
+  ApiService
 ]
 
 @NgModule({
