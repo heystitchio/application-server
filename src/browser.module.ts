@@ -21,16 +21,16 @@ import { CookieService }       from 'angular2-cookie/services/cookies.service';
 import * as Raven              from 'raven-js';
 
 import { AppModule,
-         AppComponent }        from './+app/app.module';
-import { SharedModule }        from './+app/shared/shared.module';
+         AppComponent }        from './app/app.module';
+import { SharedModule }        from './app/shared/shared.module';
 import { CacheService,
-         HashService }         from './+app/shared/services/cache';
-import { ApiService }          from './+app/shared/services/api';
-import { MetaService }         from './+app/shared/meta/meta.service';
-import { AUTH_SERVICE }        from './+app/+auth/services/auth.service';
-import { BrowserAuthService }  from './+app/+auth/services/browser.auth.service';
+         HashService }         from './app/shared/services/cache';
+import { ApiService }          from './app/shared/services/api';
+import { MetaService }         from './app/shared/services/meta';
+import { AuthService }         from './app/auth/services/auth.service';
+import { BrowserAuthService }  from './app/auth/services';
 
-import './+app/shared/lib/rxjs-operators';
+import './app/shared/lib/rxjs-operators';
 
 // import * as LRU from 'modern-lru';
 
@@ -48,15 +48,15 @@ export function getResponse() {
   return {};
 }
 
-export function authServiceFactory(cookie: CookieService, api: ApiService, http: Http) {
-  return new BrowserAuthService(cookie, api, http);
-}
-
 export const UNIVERSAL_KEY = 'UNIVERSAL_CACHE';
 
 //Raven Error Reporting
 Raven
-  .config('https://e090d88b54a342fba41842bf5a5f9d83@sentry.io/142633')
+  .config('https://e090d88b54a342fba41842bf5a5f9d83@sentry.io/142633', {
+    // MD5 hash of working project version (e.g. v.1.0.0)
+    // Live productions should be prefixed with "LIVE:" (e.g. LIVE:2888cd...)
+    release: '2888cd106bd98b888fca74c785bd6cf5'
+  })
   .install();
 
 export class RavenErrorHandler implements ErrorHandler {
@@ -84,7 +84,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: 'req', useFactory: getRequest },
     { provide: 'res', useFactory: getResponse },
     { provide: 'LRU', useFactory: getLRU, deps: [] },
-    { provide: AUTH_SERVICE, useFactory: authServiceFactory, deps: [CookieService, ApiService, Http] },
+    { provide: AuthService, useClass: BrowserAuthService },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
 
     CacheService,

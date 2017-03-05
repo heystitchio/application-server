@@ -52,7 +52,7 @@ app.set('views', __dirname);
 app.set('view engine', 'html');
 app.set('json spaces', 2);
 
-app.use(cookieParser('vPnCptPazBt!P!95CTaaz8Zse*aQP-5HSz2Fn9rZp+tMEzuVm%uLRp#kYxFU8?Dg'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(interceptor((req, res)=>({
   // don't compress responses with this request header
@@ -122,7 +122,7 @@ function ngApp(req, res) {
     res.render('index', {
       req,
       res,
-      preboot: false,
+      preboot: { appRoot: 'app' },
       baseUrl: '/',
       requestUrl: req.originalUrl,
       originUrl: `http://localhost:${ app.get('port') }`

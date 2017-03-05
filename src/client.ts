@@ -4,7 +4,7 @@ import 'ts-helpers';
 import './__workaround.browser';
 
 // Libraries
-import './+app/shared/lib/rxjs-operators';
+import './app/shared/lib/rxjs-operators';
 
 // Plugins
 import * as $ from 'jquery';

@@ -34,7 +34,7 @@ export var commonConfig = {
   module: {
     rules: [
       // TypeScript
-      { test: /\.ts$/,   use: ['awesome-typescript-loader', 'angular2-template-loader'] },
+      { test: /\.ts$/,   use: ['ts-loader', 'angular2-template-loader'] },
       { test: /\.html$/, use: 'raw-loader' },
       { test: /\.css$/,  use: 'raw-loader' },
       { test: /\.json$/, use: 'json-loader' }
